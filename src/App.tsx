@@ -1,4 +1,11 @@
-import { createContext, useReducer, useState, useMemo, useEffect } from 'react'
+import {
+  createContext,
+  useReducer,
+  useState,
+  useMemo,
+  useEffect,
+  useCallback,
+} from 'react'
 
 //
 
@@ -7,61 +14,94 @@ import CreateIdea from '../components/createIdea'
 import Ideas from '../components/ideas'
 import getDate from './utils/getDate'
 import reducer from './utils/reducer'
-import { GlobalStateType, IdeasType } from './types'
+import * as api from './utils/api'
+import { ActionType, GlobalStateType, IdeasType } from './types'
 
 export const IdeasContext = createContext<GlobalStateType>(null)
 
-const initialIdeas: IdeasType[] = [
-  {
-    id: null,
-    title: '',
-    text: '',
-    updated: false,
-    time: 0,
-  },
-]
+const initialIdeas: IdeasType[] = []
+
+type StatusType = 'loading' | 'ready' | 'error'
 
 //
 
 function App() {
   const [ideas, dispatch] = useReducer(reducer, initialIdeas)
   const [modalVisibility, setModalVisibility] = useState(false)
+  const [status, setStatus] = useState<StatusType>('loading')
+  const [saveError, setSaveError] = useState<string>(null)
 
-  // local storage
-  useEffect(() => {
-    const storedIdeas: IdeasType[] = JSON.parse(localStorage.getItem('storedIdeas'))
-    if (storedIdeas) {
-      storedIdeas.forEach((localIdeas) => {
-        const { title, text, time, updated, id } = localIdeas
-        if (title !== '' && text !== '')
-          return dispatch({
-            type: 'setIdeas',
-            id,
-            title,
-            time,
-            text,
-            updated,
-          })
-      })
+  // pull the board from the API - also used to resync after a failed write
+  const refresh = useCallback(async () => {
+    try {
+      const serverIdeas = await api.listIdeas()
+      dispatch({ type: 'load', ideas: serverIdeas })
+      setStatus('ready')
+    } catch {
+      setStatus('error')
     }
   }, [])
 
+  useEffect(() => {
+    refresh()
+  }, [refresh])
+
   //
 
-  useEffect(() => {
-    const localIdeas = JSON.stringify(ideas)
-    localStorage.setItem('storedIdeas', localIdeas)
-  }, [ideas])
+  // writes are optimistic: the reducer updates straight away, then we persist.
+  // if the write fails we surface it and pull the server's version back down.
+  const persist = useCallback(
+    async (action: ActionType) => {
+      try {
+        if (action.type === 'submit') {
+          await api.createIdea({
+            id: action.id,
+            title: action.title,
+            text: action.text,
+            time: action.time,
+          })
+        } else if (action.type === 'update') {
+          await api.updateIdea(action.id, {
+            title: action.title,
+            text: action.text,
+            time: action.time,
+          })
+        } else if (action.type === 'delete') {
+          await api.deleteIdea(action.id)
+        }
+        setSaveError(null)
+      } catch (cause) {
+        setSaveError(
+          cause instanceof Error ? cause.message : 'Could not save that idea'
+        )
+        refresh()
+      }
+    },
+    [refresh]
+  )
+
+  const dispatchAndPersist = useCallback(
+    (action: ActionType) => {
+      if (action.type === 'sort' || action.type === 'load') {
+        dispatch(action)
+        return
+      }
+      const stamped = { ...action, time: action.time ?? Date.now() }
+      dispatch(stamped)
+      persist(stamped)
+    },
+    [persist]
+  )
 
   //
 
   const globalState: GlobalStateType = useMemo(
     () => ({
-      dispatch,
+      dispatch: dispatchAndPersist,
       ideas,
       getDate,
     }),
-    [dispatch, ideas]
+    [dispatchAndPersist, ideas]
   )
 
   //
@@ -70,6 +110,34 @@ function App() {
     <IdeasContext.Provider value={globalState}>
       <div className='create-idea-wrapper'>
         <CreateIdea />
+
+        {status === 'loading' && (
+          <p className='board-status' role='status'>
+            Loading ideas...
+          </p>
+        )}
+
+        {status === 'error' && (
+          <div className='board-status board-status--error' role='alert'>
+            <span>Could not reach the idea board.</span>
+            <button
+              type='button'
+              className='retry-btn'
+              onClick={() => {
+                setStatus('loading')
+                refresh()
+              }}>
+              Try again
+            </button>
+          </div>
+        )}
+
+        {saveError && status !== 'error' && (
+          <p className='board-status board-status--error' role='alert'>
+            {saveError}
+          </p>
+        )}
+
         <Ideas
           modalVisibility={modalVisibility}
           setModalVisibility={setModalVisibility}

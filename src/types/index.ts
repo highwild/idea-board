@@ -6,7 +6,8 @@ export interface ActionType {
   sortType?: string;
   id?: string | null;
   time?:number,
-  updated?:boolean
+  updated?:boolean,
+  ideas?: IdeasType[]
 }
 
 export interface IdeasType {

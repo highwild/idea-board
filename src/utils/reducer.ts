@@ -5,6 +5,12 @@ export default function reducer(ideas: IdeasType[], action: ActionType) {
   switch (action.type) {
     //
 
+    // replaces the whole board with what the server returned
+    case 'load':
+      return action.ideas ?? []
+
+    //
+
     case 'submit':
       return [
         ...ideas,
@@ -12,7 +18,7 @@ export default function reducer(ideas: IdeasType[], action: ActionType) {
           title: action.title,
           text: action.text,
           id: action.id,
-          time: Date.now(),
+          time: action.time ?? Date.now(),
           updated: false,
         },
       ]
@@ -27,7 +33,7 @@ export default function reducer(ideas: IdeasType[], action: ActionType) {
             title: action.title,
             text: action.text,
             updated: true,
-            time: Date.now(),
+            time: action.time ?? Date.now(),
           }
         }
         return idea
