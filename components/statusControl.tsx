@@ -15,11 +15,7 @@ function StatusControl({ status, ideaTitle, onChange }: StatusPropType) {
         <button
           key={value}
           type='button'
-          className={
-            value === 'done'
-              ? 'segmented-option segmented-option--done'
-              : 'segmented-option'
-          }
+          className={`segmented-option segmented-option--${value}`}
           aria-pressed={status === value}
           onClick={() => onChange(value)}>
           {STATUS_LABELS[value]}

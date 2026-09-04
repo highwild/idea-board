@@ -147,9 +147,15 @@ components:
   segmented-option-selected:
     backgroundColor: "{colors.surface-hover}"
     textColor: "{colors.text}"
+  segmented-option-todo-selected:
+    backgroundColor: "{colors.todo-field}"
+    textColor: "{colors.todo-ink}"
+  segmented-option-doing-selected:
+    backgroundColor: "{colors.doing-field}"
+    textColor: "{colors.doing-ink}"
   segmented-option-done-selected:
-    backgroundColor: "{colors.surface-hover}"
-    textColor: "{colors.accent}"
+    backgroundColor: "{colors.done-field}"
+    textColor: "{colors.done-ink}"
   notes-body:
     backgroundColor: "{colors.surface}"
     borderColor: "{colors.line}"
@@ -241,6 +247,17 @@ salmon red, each spent in exactly one place.
 - **Muted Ink** (`{colors.text-2}`): Ghost button labels and the confirm bar's question.
 - **Quiet Ink** (`{colors.text-3}`): Placeholders, timestamps, the idea count, the empty
   state, the composer hint, resting icon buttons, and unselected sort options.
+
+### Status field
+
+Three dimmed fields, each with ink from its own hue, used only by the selected status segment.
+Every pair clears 7:1 against its own field.
+
+| State | Field | Ink |
+| --- | --- | --- |
+| To do | `#16233a` | `#8ab4ff` |
+| In progress | `#2e2113` | `#f0b45e` |
+| Done | `#16281c` | `#79cf95` |
 
 ### Named Rules
 **The One Accent Rule.** Periwinkle marks the primary action, the focused composer, the caret,
@@ -390,11 +407,16 @@ hairline-bordered container with 2px inner padding, segments at 4px radius in qu
 transparent, the chosen one marked with `aria-pressed` and given the slate wash and full ink.
 
 Two instances exist. **Sort** (Added / Newest / A-Z) sits in the header and renders only when
-the board holds more than two ideas. **Status** (To do / In progress / Done) sits on every
-entry's meta line, always visible, because changing it is the most frequent act on the board.
-Status is the single place the accent appears outside the primary action: a selected "Done"
-takes `{colors.accent}` ink, and its entry's title and body drop to `{colors.text-2}` so
-finished work stops competing with what is still open.
+the board holds more than two ideas. It uses the neutral selection: the slate wash and full
+ink. **Status** (To do / In progress / Done) sits on every entry's meta line, always visible,
+because changing it is the most frequent act on the board. Its selected segment carries a
+dimmed field of its own state colour instead of the slate wash — blue, amber, green — with
+ink drawn from the same hue. A finished entry's title and body also drop to
+`{colors.text-2}` so completed work stops competing with what is still open.
+
+**The Status Field Rule:** the three status colours are the only hues on the board besides the
+accent and the earned red. They appear on the selected status segment and nowhere else — never
+as a dot, a bar, a border, or a background on the entry itself.
 
 **The One Segmented Rule:** a new three-way choice reuses this control rather than inventing a
 menu, a select, or a set of pills.

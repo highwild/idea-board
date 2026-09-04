@@ -31,6 +31,14 @@
   --danger: #f06a6f;
   --danger-ink: #2a1416;
 
+  /* status carries its own dimmed field, one per state */
+  --todo-field: #16233a;
+  --todo-ink: #8ab4ff;
+  --doing-field: #2e2113;
+  --doing-ink: #f0b45e;
+  --done-field: #16281c;
+  --done-ink: #79cf95;
+
   --radius: 10px;
   --radius-sm: 6px;
   --measure: 720px;
@@ -325,8 +333,19 @@ h1 {
   color: var(--text);
 }
 
+.segmented-option--todo[aria-pressed='true'] {
+  background-color: var(--todo-field);
+  color: var(--todo-ink);
+}
+
+.segmented-option--in-progress[aria-pressed='true'] {
+  background-color: var(--doing-field);
+  color: var(--doing-ink);
+}
+
 .segmented-option--done[aria-pressed='true'] {
-  color: var(--accent);
+  background-color: var(--done-field);
+  color: var(--done-ink);
 }
 
 /* ---------- entries ---------- */
