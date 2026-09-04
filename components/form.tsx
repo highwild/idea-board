@@ -57,13 +57,13 @@ function Form(formProps: FormPropType) {
         required
       />
 
-      <input
-        type='text'
+      <textarea
         className='createText'
         placeholder='Enter the description of your idea'
         autoComplete='false'
         defaultValue={isUpdateForm ? selectedItem.text : ''}
         ref={createText}
+        rows={8}
         required
       />
 
