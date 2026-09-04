@@ -105,3 +105,92 @@ test('Check editing an idea happens in place and dispatches the update', async (
     id: 'sunday',
   })
 })
+
+test('Check changing status patches only the status', async () => {
+  const user = userEvent.setup()
+  const mockDispatch = jest.fn()
+
+  const ideas = [
+    {
+      title: 'sunday',
+      id: 'sunday',
+      text: 'description',
+      updated: false,
+      time: 0,
+      status: 'todo' as const,
+      notes: '',
+    },
+  ]
+
+  render(<Ideas />, { ideas, dispatch: mockDispatch })
+
+  await user.click(screen.getByText('In progress'))
+
+  expect(mockDispatch).toHaveBeenCalledWith({
+    type: 'patch',
+    id: 'sunday',
+    status: 'in-progress',
+  })
+})
+
+test('Check notes open, take writing and patch only the notes', async () => {
+  const user = userEvent.setup()
+  const mockDispatch = jest.fn()
+
+  const ideas = [
+    {
+      title: 'sunday',
+      id: 'sunday',
+      text: 'description',
+      updated: false,
+      time: 0,
+      status: 'todo' as const,
+      notes: '',
+    },
+  ]
+
+  render(<Ideas />, { ideas, dispatch: mockDispatch })
+
+  // the notes section is closed until it is pulled out
+  expect(screen.queryByText('Nothing written here yet.')).not.toBeInTheDocument()
+
+  await user.click(screen.getByLabelText('notes on sunday'))
+  expect(screen.getByText('Nothing written here yet.')).toBeInTheDocument()
+
+  await user.click(screen.getByText('Add notes'))
+  await user.type(
+    screen.getByPlaceholderText('Links, references, editing notes'),
+    'https://imgur.com/a/abc123'
+  )
+  await user.click(screen.getByText('Save notes'))
+
+  expect(mockDispatch).toHaveBeenCalledWith({
+    type: 'patch',
+    id: 'sunday',
+    notes: 'https://imgur.com/a/abc123',
+  })
+})
+
+test('Check links in notes are rendered as links', async () => {
+  const user = userEvent.setup()
+
+  const ideas = [
+    {
+      title: 'sunday',
+      id: 'sunday',
+      text: 'description',
+      updated: false,
+      time: 0,
+      status: 'done' as const,
+      notes: 'dump is at https://imgur.com/a/abc123 - grade before cutting',
+    },
+  ]
+
+  render(<Ideas />, { ideas })
+
+  await user.click(screen.getByLabelText('notes on sunday'))
+
+  const link = screen.getByRole('link', { name: 'https://imgur.com/a/abc123' })
+  expect(link).toHaveAttribute('href', 'https://imgur.com/a/abc123')
+  expect(link).toHaveAttribute('rel', 'noreferrer noopener')
+})

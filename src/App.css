@@ -295,7 +295,7 @@ h1 {
   color: var(--text-3);
 }
 
-.sort {
+.segmented {
   display: flex;
   gap: 0.125rem;
   padding: 0.125rem;
@@ -303,7 +303,7 @@ h1 {
   border-radius: var(--radius-sm);
 }
 
-.sort-option {
+.segmented-option {
   font: inherit;
   font-size: 0.8125rem;
   line-height: 1;
@@ -316,13 +316,17 @@ h1 {
   transition: background-color 120ms var(--ease), color 120ms var(--ease);
 }
 
-.sort-option:hover {
+.segmented-option:hover {
   color: var(--text);
 }
 
-.sort-option[aria-pressed='true'] {
+.segmented-option[aria-pressed='true'] {
   background-color: var(--surface-hover);
   color: var(--text);
+}
+
+.segmented-option--done[aria-pressed='true'] {
+  color: var(--accent);
 }
 
 /* ---------- entries ---------- */
@@ -410,12 +414,137 @@ h1 {
   overflow-wrap: anywhere;
 }
 
+.entry-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
 .entry-time {
-  margin-top: 0.875rem;
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
   font-size: 0.75rem;
   color: var(--text-3);
+  margin-left: auto;
+}
+
+/* a finished idea stays legible but stops competing with what is still open */
+.entry--done .entry-title,
+.entry--done .entry-text {
+  color: var(--text-2);
+}
+
+/* ---------- notes ---------- */
+
+.notes {
+  margin-top: 0.75rem;
+}
+
+.notes-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1;
+  padding: 0.375rem 0.5rem 0.375rem 0.25rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: color 120ms var(--ease);
+}
+
+.notes-toggle:hover {
+  color: var(--text);
+}
+
+.notes-chevron {
+  transform: rotate(-90deg);
+  transition: transform 160ms var(--ease);
+}
+
+.notes-chevron--open {
+  transform: rotate(0deg);
+}
+
+.notes-marker {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--accent);
+}
+
+.notes-body {
+  margin-top: 0.25rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+  animation: notes-open 160ms var(--ease) both;
+}
+
+@keyframes notes-open {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.notes-text,
+.notes-placeholder {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  max-width: 68ch;
+  text-wrap: pretty;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.notes-text {
+  color: var(--text-2);
+}
+
+.notes-placeholder {
+  color: var(--text-3);
+}
+
+.notes-text a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+.notes-text a:hover {
+  color: #a4b6ff;
+}
+
+.notes-field {
+  width: 100%;
+  display: block;
+  background-color: transparent;
+  border: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  padding: 0;
+  resize: none;
+  overflow: hidden;
+  min-height: 5rem;
+  caret-color: var(--accent);
+}
+
+.notes-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
 }
 
 .entry-confirm {

@@ -20,6 +20,8 @@ export default function reducer(ideas: IdeasType[], action: ActionType) {
           id: action.id,
           time: action.time ?? Date.now(),
           updated: false,
+          status: action.status ?? 'todo',
+          notes: action.notes ?? '',
         },
         ...ideas,
       ]
@@ -35,6 +37,21 @@ export default function reducer(ideas: IdeasType[], action: ActionType) {
             text: action.text,
             updated: true,
             time: action.time ?? Date.now(),
+          }
+        }
+        return idea
+      })
+
+    //
+
+    // status and notes only: the idea's own words and date are left alone
+    case 'patch':
+      return ideas.map((idea) => {
+        if (action.id === idea.id) {
+          return {
+            ...idea,
+            status: action.status ?? idea.status,
+            notes: action.notes ?? idea.notes,
           }
         }
         return idea

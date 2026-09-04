@@ -18,12 +18,12 @@ function SortIdeas(sortProps: { isVisible: boolean }) {
   if (!isVisible) return null
 
   return (
-    <div className='sort' role='group' aria-label='Sort ideas'>
+    <div className='segmented' role='group' aria-label='Sort ideas'>
       {OPTIONS.map((option) => (
         <button
           key={option.value}
           type='button'
-          className='sort-option'
+          className='segmented-option'
           aria-pressed={active === option.value}
           onClick={() => {
             setActive(option.value)

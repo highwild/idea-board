@@ -3,8 +3,11 @@ import { useContext, useEffect, useRef, useState } from 'react'
 //
 
 import Form from './form'
+import Notes from './notes'
+import StatusControl from './statusControl'
 import { PencilIcon, TrashIcon } from './icons'
 import { IdeasContext } from '../src/App'
+import { StatusType } from '../src/types'
 
 //
 
@@ -47,6 +50,8 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
     <ul className='entries'>
       {written.map((idea) => {
         const { title, text, updated, id, time } = idea
+        const status: StatusType = idea.status ?? 'todo'
+        const notes = idea.notes ?? ''
         const isEditing = id !== null && editingId === id
         const isConfirming = id !== null && confirmingId === id
 
@@ -75,9 +80,13 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
         return (
           <li
             key={id}
-            className={
-              id !== null && id === arrivedId ? 'entry entry--arrived' : 'entry'
-            }>
+            className={[
+              'entry',
+              status === 'done' ? 'entry--done' : '',
+              id !== null && id === arrivedId ? 'entry--arrived' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}>
             <div className='entry-head'>
               <p data-testid='card-title' className='entry-title'>
                 {title}
@@ -110,9 +119,26 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
               </p>
             )}
 
-            <p className='entry-time'>
-              {updated ? `Updated ${getDate(time)}` : `Written ${getDate(time)}`}
-            </p>
+            <div className='entry-meta'>
+              <StatusControl
+                status={status}
+                ideaTitle={title}
+                onChange={(next) =>
+                  dispatch({ type: 'patch', id, status: next })
+                }
+              />
+              <p className='entry-time'>
+                {updated
+                  ? `Updated ${getDate(time)}`
+                  : `Written ${getDate(time)}`}
+              </p>
+            </div>
+
+            <Notes
+              notes={notes}
+              ideaTitle={title}
+              onSave={(next) => dispatch({ type: 'patch', id, notes: next })}
+            />
 
             {isConfirming && (
               <div className='entry-confirm' role='alert'>

@@ -1,4 +1,4 @@
-import { IdeasType } from '../types'
+import { IdeasType, StatusType } from '../types'
 
 const BASE = '/api/ideas'
 
@@ -56,6 +56,19 @@ export function updateIdea(
     method: 'PUT',
     headers: JSON_HEADERS,
     body: JSON.stringify(idea),
+  })
+}
+
+// status and notes change on their own route, so they never rewrite the date
+// the idea was written on
+export function patchIdea(
+  id: string,
+  patch: { status?: StatusType; notes?: string }
+): Promise<IdeasType> {
+  return request<IdeasType>(`${BASE}/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    headers: JSON_HEADERS,
+    body: JSON.stringify(patch),
   })
 }
 

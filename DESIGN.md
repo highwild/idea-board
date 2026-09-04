@@ -134,19 +134,27 @@ components:
   icon-button-hover:
     backgroundColor: "{colors.surface-hover}"
     textColor: "{colors.text}"
-  sort:
+  segmented:
     backgroundColor: "transparent"
     rounded: "{rounded.sm}"
     padding: "2px"
-  sort-option:
+  segmented-option:
     backgroundColor: "transparent"
     textColor: "{colors.text-3}"
     typography: "{typography.label-small}"
     rounded: "{rounded.xs}"
     padding: "6px 10px"
-  sort-option-selected:
+  segmented-option-selected:
     backgroundColor: "{colors.surface-hover}"
     textColor: "{colors.text}"
+  segmented-option-done-selected:
+    backgroundColor: "{colors.surface-hover}"
+    textColor: "{colors.accent}"
+  notes-body:
+    backgroundColor: "{colors.surface}"
+    borderColor: "{colors.line}"
+    rounded: "{rounded.sm}"
+    padding: "14px 16px"
   entry:
     backgroundColor: "transparent"
     textColor: "{colors.text}"
@@ -376,11 +384,29 @@ row hover or on keyboard focus within the cluster; on coarse pointers
 authored animation in the system: 420ms fade-in from `translateY(-10px)` with a 3px blur that
 clears at 60%. Entries already on the board never animate.
 
-### Sort control
-A three-segment inline group (Added / Newest / A-Z) in a 6px hairline-bordered container with
-2px inner padding. Segments are 4px-radius, quiet ink, transparent; the selected segment is
-marked with `aria-pressed` and gets the slate wash and full ink. It renders only when the
-board holds more than two ideas.
+### Segmented control
+One three-segment grammar serves every mutually exclusive choice on the board: a 6px
+hairline-bordered container with 2px inner padding, segments at 4px radius in quiet ink on
+transparent, the chosen one marked with `aria-pressed` and given the slate wash and full ink.
+
+Two instances exist. **Sort** (Added / Newest / A-Z) sits in the header and renders only when
+the board holds more than two ideas. **Status** (To do / In progress / Done) sits on every
+entry's meta line, always visible, because changing it is the most frequent act on the board.
+Status is the single place the accent appears outside the primary action: a selected "Done"
+takes `{colors.accent}` ink, and its entry's title and body drop to `{colors.text-2}` so
+finished work stops competing with what is still open.
+
+**The One Segmented Rule:** a new three-way choice reuses this control rather than inventing a
+menu, a select, or a set of pills.
+
+### Notes disclosure
+Each entry carries a collapsed `Notes` toggle in quiet ink with a chevron that rotates from
+-90deg to 0 over 160ms, and a 4px accent dot when notes exist. Open, it reveals a slate panel
+inside the entry — a hairline border, 6px radius, 14px/16px padding — holding the notes at
+0.875rem over a 68ch measure, URLs rendered as accent-inked underlined links opening in a new
+tab, and a ghost "Add notes" / "Edit notes" button pushed right. Editing swaps the panel for a
+borderless auto-growing field on the same ground; Ctrl/Cmd+Enter saves and Escape closes only
+a clean draft. The pull-out is per entry and never a dialog.
 
 ### Inline confirmation
 Deletion confirms inside the entry, never in a dialog: a slate bar with a

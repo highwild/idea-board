@@ -41,6 +41,14 @@ npm run cf:deploy
 | GET    | `/api/ideas`     | -                           | `200` ideas, newest first       |
 | POST   | `/api/ideas`     | `{ id, title, text, time }` | `201` created idea, `409` if id exists |
 | PUT    | `/api/ideas/:id` | `{ title, text, time }`     | `200` updated idea, `404` if missing   |
+| PATCH  | `/api/ideas/:id` | `{ status?, notes? }`       | `200` updated idea, `404` if missing   |
 | DELETE | `/api/ideas/:id` | -                           | `204`, `404` if missing         |
 
-Each idea is `{ id, title, text, updated, time }`, where `updated` is a boolean.
+Each idea is `{ id, title, text, updated, time, status, notes }`, where `updated` is a
+boolean, `status` is one of `todo`, `in-progress` or `done`, and `notes` is free text
+(20000 characters max, may be empty).
+
+`PUT` is a full edit: it rewrites the title, text and date, and sets `updated`. `PATCH`
+changes only status and/or notes and deliberately leaves the date and `updated` flag alone,
+so moving an idea to `done` never rewrites when it was written. Omitted fields on either
+route keep whatever is already stored.

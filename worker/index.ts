@@ -2,6 +2,7 @@ import {
   IdeaRow,
   ValidationError,
   parseCreate,
+  parsePatch,
   parseUpdate,
   rowToIdea,
 } from './ideas'
@@ -32,7 +33,7 @@ async function readBody(request: Request): Promise<unknown> {
 
 async function listIdeas(env: Env): Promise<Response> {
   const { results } = await env.DB.prepare(
-    'SELECT id, title, text, updated, time FROM ideas ORDER BY time DESC'
+    'SELECT id, title, text, updated, time, status, notes FROM ideas ORDER BY time DESC'
   ).all<IdeaRow>()
   return json((results ?? []).map(rowToIdea))
 }
@@ -48,9 +49,9 @@ async function createIdea(request: Request, env: Env): Promise<Response> {
   }
 
   await env.DB.prepare(
-    'INSERT INTO ideas (id, title, text, time, updated) VALUES (?, ?, ?, ?, 0)'
+    'INSERT INTO ideas (id, title, text, time, updated, status, notes) VALUES (?, ?, ?, ?, 0, ?, ?)'
   )
-    .bind(idea.id, idea.title, idea.text, idea.time)
+    .bind(idea.id, idea.title, idea.text, idea.time, idea.status, idea.notes)
     .run()
 
   return json({ ...idea, updated: false }, 201)
@@ -63,10 +64,28 @@ async function updateIdea(
 ): Promise<Response> {
   const payload = parseUpdate(await readBody(request))
 
+  // a null status or notes leaves whatever is already stored alone
   const row = await env.DB.prepare(
-    'UPDATE ideas SET title = ?, text = ?, time = ?, updated = 1 WHERE id = ? RETURNING id, title, text, updated, time'
+    'UPDATE ideas SET title = ?, text = ?, time = ?, updated = 1, status = COALESCE(?, status), notes = COALESCE(?, notes) WHERE id = ? RETURNING id, title, text, updated, time, status, notes'
   )
-    .bind(payload.title, payload.text, payload.time, id)
+    .bind(payload.title, payload.text, payload.time, payload.status, payload.notes, id)
+    .first<IdeaRow>()
+
+  if (!row) return error('no idea with that id', 404)
+  return json(rowToIdea(row))
+}
+
+async function patchIdea(
+  request: Request,
+  env: Env,
+  id: string
+): Promise<Response> {
+  const payload = parsePatch(await readBody(request))
+
+  const row = await env.DB.prepare(
+    'UPDATE ideas SET status = COALESCE(?, status), notes = COALESCE(?, notes) WHERE id = ? RETURNING id, title, text, updated, time, status, notes'
+  )
+    .bind(payload.status, payload.notes, id)
     .first<IdeaRow>()
 
   if (!row) return error('no idea with that id', 404)
@@ -101,6 +120,7 @@ async function handleApi(
   if (match) {
     const id = decodeURIComponent(match[1])
     if (method === 'PUT') return updateIdea(request, env, id)
+    if (method === 'PATCH') return patchIdea(request, env, id)
     if (method === 'DELETE') return deleteIdea(env, id)
     return error('method not allowed', 405)
   }

@@ -66,6 +66,11 @@ function App() {
             text: action.text,
             time: action.time,
           })
+        } else if (action.type === 'patch') {
+          await api.patchIdea(action.id, {
+            status: action.status,
+            notes: action.notes,
+          })
         } else if (action.type === 'delete') {
           await api.deleteIdea(action.id)
         }

@@ -46,3 +46,22 @@ export function TrashIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function ChevronIcon({ className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox='0 0 16 16'
+      width='16'
+      height='16'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='1.5'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      aria-hidden='true'
+      focusable='false'>
+      <path d='M5.5 6.5L8 9.2l2.5-2.7' />
+    </svg>
+  )
+}

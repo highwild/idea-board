@@ -1,4 +1,14 @@
 /* eslint-disable prettier/prettier */
+export const STATUSES = ['todo', 'in-progress', 'done'] as const
+
+export type StatusType = (typeof STATUSES)[number]
+
+export const STATUS_LABELS: Record<StatusType, string> = {
+  todo: 'To do',
+  'in-progress': 'In progress',
+  done: 'Done',
+}
+
 export interface ActionType {
   type: string;
   text?: string;
@@ -7,6 +17,8 @@ export interface ActionType {
   id?: string | null;
   time?:number,
   updated?:boolean,
+  status?: StatusType,
+  notes?: string,
   ideas?: IdeasType[]
 }
 
@@ -16,6 +28,8 @@ export interface IdeasType {
   text: string;
   updated: boolean;
   time: number;
+  status?: StatusType;
+  notes?: string;
 }
 
 export interface GlobalStateType{
