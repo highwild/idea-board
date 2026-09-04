@@ -431,6 +431,15 @@ entry itself.
 **The One Segmented Rule:** a new three-way choice reuses this control rather than inventing a
 menu, a select, or a set of pills.
 
+### Export control
+A small ghost button at the far right of the header, hairline-bordered at 6px radius, carrying
+a 16px download glyph and the word Export in quiet ink that rises to full on hover. It is the
+last thing on the header line and the only control there that acts on the board rather than
+describing it. It renders only when the board holds something.
+
+The board leaves as one Markdown file — a heading per idea, its status, tags and date as a
+short list, then the writing and any notes — so the record outlives this app.
+
 ### Tags
 Small rectangular chips at 4px radius with a `{colors.line}` hairline, transparent ground and
 `{colors.text-2}` ink, set at 0.75rem in lowercase. They sit between an entry's title and its

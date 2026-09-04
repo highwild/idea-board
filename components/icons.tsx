@@ -65,3 +65,24 @@ export function ChevronIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function DownloadIcon({ className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox='0 0 16 16'
+      width='16'
+      height='16'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='1.5'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      aria-hidden='true'
+      focusable='false'>
+      <path d='M8 2.8v7' />
+      <path d='M5.3 7.1L8 9.8l2.7-2.7' />
+      <path d='M3 11.6v1a.8.8 0 0 0 .8.8h8.4a.8.8 0 0 0 .8-.8v-1' />
+    </svg>
+  )
+}

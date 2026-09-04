@@ -13,6 +13,7 @@ import './App.css'
 import CreateIdea from '../components/createIdea'
 import Ideas from '../components/ideas'
 import SortIdeas from '../components/sortIdeas'
+import ExportButton from '../components/exportButton'
 import getDate from './utils/getDate'
 import reducer from './utils/reducer'
 import * as api from './utils/api'
@@ -129,6 +130,7 @@ function App() {
                 {ideaCount} {ideaCount === 1 ? 'idea' : 'ideas'}
               </p>
               <SortIdeas isVisible={ideaCount > 2} />
+              {ideaCount > 0 && <ExportButton />}
             </div>
           )}
         </header>
