@@ -142,13 +142,6 @@ h1 {
   font-size: 1.125rem;
 }
 
-.counter {
-  align-self: flex-start;
-  padding-left: 1.2rem;
-  font-size: 0.9rem;
-  color: #faf9eb80;
-}
-
 .button-wrapper {
   display: flex;
   width: 100%;

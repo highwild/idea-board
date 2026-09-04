@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react'
+import React, { useRef, useContext } from 'react'
 
 //
 
@@ -16,7 +16,6 @@ interface FormPropType {
 function Form(formProps: FormPropType) {
   const { setIsFormVisible, isUpdateForm, selectedItem } = formProps
   const ideaContext = useContext(IdeasContext)
-  const [charactersleft, setCharactersLeft] = useState(140)
   const createTitle = useRef(null)
   const createText = useRef(null)
 
@@ -41,7 +40,6 @@ function Form(formProps: FormPropType) {
       setIsFormVisible((preVis) => !preVis)
       createTitle.current.value = ''
       createText.current.value = ''
-      setCharactersLeft(140)
     }
   }
 
@@ -66,16 +64,8 @@ function Form(formProps: FormPropType) {
         autoComplete='false'
         defaultValue={isUpdateForm ? selectedItem.text : ''}
         ref={createText}
-        onChange={(e) => {
-          if (e.target.value === '') {
-            setCharactersLeft(140)
-          }
-          setCharactersLeft(140 - e.target.value.length)
-        }}
         required
       />
-
-      <p className='counter'>{charactersleft} characters left</p>
 
       <div className='button-wrapper mt-1'>
         <button
