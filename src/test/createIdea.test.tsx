@@ -20,7 +20,6 @@ describe('Create Idea', () => {
 
     //
 
-    await user.click(screen.getByText('Write an idea'))
     await user.type(screen.getByPlaceholderText('Title'), title)
     await user.type(
       screen.getByPlaceholderText('Enter the description of your idea'),

@@ -34,8 +34,8 @@ test('Check updated text is rendered from updated idea', async () => {
 
   expect(screen.getByText(title)).toBeInTheDocument()
   expect(screen.getByText(description)).toBeInTheDocument()
-  expect(screen.getByText('Updated on : null')).toBeInTheDocument()
-  expect(screen.queryByText('Created on : null')).not.toBeInTheDocument()
+  expect(screen.getByText('Updated null')).toBeInTheDocument()
+  expect(screen.queryByText('Written null')).not.toBeInTheDocument()
 })
 
 test('Check delete is called with the right id once confirmed', async () => {

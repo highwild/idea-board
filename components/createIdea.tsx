@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 
 //
 
@@ -8,30 +8,17 @@ import { IdeasContext } from '../src/App'
 
 //
 
-// The composer is the first line of the board, never a modal: writing an idea
-// down costs one click and never covers what is already there.
+// The composer is the first line of the board and is always open: writing an
+// idea down costs nothing and never covers what is already there.
 function CreateIdea() {
   const { dispatch } = useContext(IdeasContext)
-  const [isOpen, setIsOpen] = useState(false)
-
-  if (!isOpen) {
-    return (
-      <button
-        type='button'
-        className='composer-trigger'
-        onClick={() => setIsOpen(true)}>
-        Write an idea
-      </button>
-    )
-  }
 
   return (
     <Form
       submitLabel='Save idea'
-      onCancel={() => setIsOpen(false)}
+      onCancel={() => null}
       onSubmit={(title, text) => {
         dispatch({ type: 'submit', title, text, id: uuid() })
-        setIsOpen(false)
       }}
     />
   )

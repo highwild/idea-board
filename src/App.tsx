@@ -12,6 +12,7 @@ import {
 import './App.css'
 import CreateIdea from '../components/createIdea'
 import Ideas from '../components/ideas'
+import SortIdeas from '../components/sortIdeas'
 import getDate from './utils/getDate'
 import reducer from './utils/reducer'
 import * as api from './utils/api'
@@ -94,6 +95,10 @@ function App() {
 
   //
 
+  const ideaCount = ideas.filter((idea) => idea.title).length
+
+  //
+
   const globalState: GlobalStateType = useMemo(
     () => ({
       dispatch: dispatchAndPersist,
@@ -110,7 +115,14 @@ function App() {
       <main className='board'>
         <header className='board-head'>
           <h1>IdeaBoard</h1>
-          <p className='board-blurb'>Everything you have written down.</p>
+          {status === 'ready' && (
+            <div className='board-meta'>
+              <p className='board-count'>
+                {ideaCount} {ideaCount === 1 ? 'idea' : 'ideas'}
+              </p>
+              <SortIdeas isVisible={ideaCount > 2} />
+            </div>
+          )}
         </header>
 
         <CreateIdea />
@@ -125,7 +137,9 @@ function App() {
 
         {status === 'error' && (
           <div className='notice notice--error' role='alert'>
-            <span>Could not reach the idea board.</span>
+            <span>
+              Could not reach the idea board. Nothing written now will be saved.
+            </span>
             <button
               type='button'
               className='btn btn-ghost'

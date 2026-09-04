@@ -6,9 +6,13 @@ interface FormPropType {
   initialTitle?: string;
   initialText?: string;
   submitLabel: string;
+  cancelLabel?: string;
   onSubmit: (title: string, text: string) => void;
   onCancel: () => void;
 }
+
+const isApplePlatform =
+  typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform)
 
 // Shared by the composer at the top of the board and by an entry being edited
 // in place. Both are the same act of writing, so they are the same form.
@@ -17,22 +21,19 @@ function Form(formProps: FormPropType) {
     initialTitle = '',
     initialText = '',
     submitLabel,
+    cancelLabel = 'Cancel',
     onSubmit,
     onCancel,
   } = formProps
 
   const [title, setTitle] = useState(initialTitle)
   const [text, setText] = useState(initialText)
-  const titleRef = useRef<HTMLInputElement>(null)
   const textRef = useRef<HTMLTextAreaElement>(null)
 
   const canSubmit = title.trim().length > 0 && text.trim().length > 0
+  const isDirty = title !== initialTitle || text !== initialText
 
   //
-
-  useEffect(() => {
-    titleRef.current?.focus()
-  }, [])
 
   // the description grows with what is written in it, so a long idea is never
   // read through a five-line slot
@@ -53,7 +54,9 @@ function Form(formProps: FormPropType) {
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Escape') {
+    // escape closes the form, but never throws away writing that is still
+    // unsaved - long drafts are the normal case here
+    if (event.key === 'Escape' && !isDirty) {
       onCancel()
       return
     }
@@ -73,7 +76,6 @@ function Form(formProps: FormPropType) {
         placeholder='Title'
         autoComplete='off'
         value={title}
-        ref={titleRef}
         onChange={(e) => setTitle(e.target.value)}
       />
 
@@ -88,11 +90,15 @@ function Form(formProps: FormPropType) {
       />
 
       <div className='composer-footer'>
-        <p className='composer-hint'>Ctrl + Enter to save</p>
+        <p className='composer-hint'>
+          {isApplePlatform ? 'Cmd' : 'Ctrl'} + Enter to save
+        </p>
         <div className='composer-actions'>
-          <button type='button' className='btn btn-ghost' onClick={onCancel}>
-            Cancel
-          </button>
+          {(isDirty || cancelLabel !== 'Cancel') && (
+            <button type='button' className='btn btn-ghost' onClick={onCancel}>
+              {isDirty ? 'Discard' : cancelLabel}
+            </button>
+          )}
           <button
             type='button'
             className='btn btn-primary'

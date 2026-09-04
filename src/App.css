@@ -18,16 +18,6 @@
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'GeneralSans-Light';
-  src: url('../fonts/GeneralSans-Light.woff2') format('woff2'),
-    url('../fonts/GeneralSans-Light.woff') format('woff'),
-    url('../fonts/GeneralSans-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-display: swap;
-  font-style: normal;
-}
-
 :root {
   --bg: #0b0c0e;
   --surface: #121417;
@@ -128,45 +118,30 @@ body {
 }
 
 .board-head {
-  margin-bottom: 2.25rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.75rem;
+}
+
+.board-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
 }
 
 h1 {
   font-family: 'GeneralSans-Semibold', system-ui, sans-serif;
   font-size: 1.375rem;
+  text-wrap: balance;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
 
-.board-blurb {
-  margin-top: 0.375rem;
-  color: var(--text-2);
-  font-size: 0.9375rem;
-  line-height: 1.5;
-}
-
 /* ---------- composer ---------- */
-
-.composer-trigger {
-  width: 100%;
-  text-align: left;
-  font: inherit;
-  font-size: 0.9375rem;
-  color: var(--text-3);
-  background-color: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 0.875rem 1rem;
-  cursor: text;
-  transition: background-color 140ms var(--ease), border-color 140ms var(--ease),
-    color 140ms var(--ease);
-}
-
-.composer-trigger:hover {
-  background-color: var(--surface-hover);
-  border-color: var(--line-strong);
-  color: var(--text-2);
-}
 
 .composer {
   background-color: var(--surface);
@@ -223,10 +198,8 @@ h1 {
 }
 
 .composer-hint {
-  font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--text-3);
-  letter-spacing: 0.01em;
 }
 
 .composer-actions {
@@ -261,22 +234,19 @@ h1 {
 }
 
 .btn-primary {
-  background-color: var(--text);
-  color: #0b0c0e;
+  background-color: var(--accent);
+  color: #0a1030;
   font-family: 'GeneralSans-Semibold', system-ui, sans-serif;
 }
 
 .btn-primary:hover {
-  background-color: #ffffff;
+  background-color: #a4b6ff;
 }
 
 .btn-primary:disabled {
-  opacity: 0.35;
+  background-color: #2a3145;
+  color: #a3adc4;
   cursor: not-allowed;
-}
-
-.btn-primary:disabled:hover {
-  background-color: var(--text);
 }
 
 .btn-danger {
@@ -314,17 +284,7 @@ h1 {
   color: var(--danger);
 }
 
-/* ---------- board bar ---------- */
-
-.board-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 2.75rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--line);
-}
+/* ---------- board meta ---------- */
 
 .board-count {
   font-family: var(--mono);
@@ -373,16 +333,31 @@ h1 {
   margin: 0;
 }
 
+
+.entries {
+  margin-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+
 .entry {
   padding: 1.5rem 0;
   border-bottom: 1px solid var(--line);
-  animation: entry-in 180ms var(--ease) both;
 }
 
-@keyframes entry-in {
+/* the one authored moment: an idea landing on the board */
+.entry--arrived {
+  animation: entry-arrive 420ms var(--ease) both;
+}
+
+@keyframes entry-arrive {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(-10px);
+    filter: blur(3px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0);
   }
 }
 
@@ -405,6 +380,7 @@ h1 {
   font-family: 'GeneralSans-Semibold', system-ui, sans-serif;
   font-size: 1rem;
   line-height: 1.4;
+  text-wrap: pretty;
   letter-spacing: -0.01em;
   overflow-wrap: anywhere;
 }
@@ -434,6 +410,7 @@ h1 {
   font-size: 0.9375rem;
   line-height: 1.65;
   color: #d3d0c8;
+  text-wrap: pretty;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -471,12 +448,14 @@ h1 {
 
 .board-empty {
   margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
   color: var(--text-3);
   font-size: 0.9375rem;
 }
 
 .skeletons {
-  margin-top: 2.75rem;
+  margin-top: 2rem;
   border-top: 1px solid var(--line);
 }
 
