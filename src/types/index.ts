@@ -6,6 +6,8 @@ export const TAGS_MAX = 12
 // on the board is suggested alongside these
 export const SUGGESTED_TAGS = [
   'video',
+  'roblox',
+  'tsw',
   'short',
   'post',
   'script',
