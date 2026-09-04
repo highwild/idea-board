@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-04T00:00:00.000Z",
+  "title": "Design System: IdeaBoard",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Graphite Ground",
+        "canonical": "#0b0c0e",
+        "tonalRamp": ["#0b0c0e", "#15171a", "#232629", "#383c41", "#575c63", "#7b8189", "#a7acb3", "#dcdfe3"]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Raised Slate",
+        "canonical": "#121417",
+        "tonalRamp": ["#0a0b0d", "#121417", "#1d2126", "#2f343b", "#4b525b", "#727a85", "#a3aab4", "#dbdee3"]
+      },
+      "surface-hover": {
+        "role": "neutral",
+        "displayName": "Slate Hover",
+        "canonical": "#161a1e",
+        "tonalRamp": ["#0c0e10", "#161a1e", "#22272d", "#343b44", "#505965", "#78828f", "#a8b0ba", "#dee1e6"]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#212529",
+        "tonalRamp": ["#0d0f11", "#161a1d", "#212529", "#333940", "#4e565f", "#767f89", "#a6adb5", "#dcdfe3"]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Hairline Strong",
+        "canonical": "#2c3238",
+        "tonalRamp": ["#0f1114", "#181c20", "#22272c", "#2c3238", "#454e57", "#6c7681", "#9fa8b2", "#d8dce0"]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Paper Ink",
+        "canonical": "#edeae0",
+        "tonalRamp": ["#232219", "#3a382c", "#565243", "#75705d", "#96907b", "#b8b29c", "#d5cfbe", "#edeae0"]
+      },
+      "text-body": {
+        "role": "neutral",
+        "displayName": "Read Ink",
+        "canonical": "#d3d0c8",
+        "tonalRamp": ["#1f1e1a", "#34322c", "#4d4a42", "#6a6659", "#8a8678", "#a9a598", "#c2beb4", "#d3d0c8"]
+      },
+      "text-2": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "canonical": "#9ba0a6",
+        "tonalRamp": ["#17191b", "#262a2d", "#383d42", "#4d545a", "#697178", "#868e96", "#9ba0a6", "#cfd3d7"]
+      },
+      "text-3": {
+        "role": "neutral",
+        "displayName": "Quiet Ink",
+        "canonical": "#838890",
+        "tonalRamp": ["#141619", "#22252a", "#33383e", "#464c54", "#5f666f", "#7a818a", "#838890", "#c3c7cc"]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Periwinkle Signal",
+        "canonical": "#8aa2ff",
+        "tonalRamp": ["#13193a", "#1e2757", "#2c3a7c", "#3d4fa3", "#5468c9", "#7085ec", "#8aa2ff", "#c3ceff"]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Periwinkle Lift",
+        "canonical": "#a4b6ff",
+        "tonalRamp": ["#161b3d", "#212a5c", "#303e82", "#4253aa", "#596ecf", "#7789f1", "#a4b6ff", "#d2daff"]
+      },
+      "accent-ink": {
+        "role": "primary",
+        "displayName": "Signal Ink",
+        "canonical": "#0a1030",
+        "tonalRamp": ["#050818", "#0a1030", "#131c50", "#1f2c74", "#33429b", "#4c5cbb", "#7383d6", "#b6bfee"]
+      },
+      "accent-muted": {
+        "role": "primary",
+        "displayName": "Spent Signal",
+        "canonical": "#2a3145",
+        "tonalRamp": ["#0e111a", "#171c29", "#212739", "#2a3145", "#414a63", "#636d89", "#8e97b0", "#cbd0dd"]
+      },
+      "accent-muted-ink": {
+        "role": "primary",
+        "displayName": "Spent Signal Ink",
+        "canonical": "#a3adc4",
+        "tonalRamp": ["#191c25", "#262b38", "#373d4f", "#4b5368", "#656e86", "#828ba4", "#a3adc4", "#d5dae4"]
+      },
+      "danger": {
+        "role": "secondary",
+        "displayName": "Earned Salmon",
+        "canonical": "#f06a6f",
+        "tonalRamp": ["#3a1113", "#5a191d", "#7d2328", "#a32f35", "#c94248", "#e3595f", "#f06a6f", "#ffb7ba"]
+      },
+      "danger-hover": {
+        "role": "secondary",
+        "displayName": "Salmon Lift",
+        "canonical": "#ff8286",
+        "tonalRamp": ["#3f1416", "#601c20", "#84262b", "#ab3338", "#d1474c", "#ec6065", "#ff8286", "#ffc4c6"]
+      },
+      "danger-ink": {
+        "role": "secondary",
+        "displayName": "Destruction Ink",
+        "canonical": "#2a1416",
+        "tonalRamp": ["#170a0b", "#2a1416", "#432023", "#602f33", "#834247", "#a75a5f", "#c9787d", "#ecb4b7"]
+      }
+    },
+    "typographyMeta": {
+      "wordmark": { "displayName": "Wordmark", "purpose": "The word IdeaBoard, once, top-left of the header line. The largest type in the system at 1.375rem." },
+      "title": { "displayName": "Title", "purpose": "Entry titles and the composer's title field. Semibold, tracked -0.01em, breaks anywhere so a pasted URL cannot widen the measure." },
+      "body": { "displayName": "Body", "purpose": "Entry descriptions and the description field, capped at 68ch with authored line breaks preserved." },
+      "label": { "displayName": "Label", "purpose": "All button text, the inline confirm bar, and notices." },
+      "label-small": { "displayName": "Label Small", "purpose": "Sort segments and the composer's keyboard hint." },
+      "meta": { "displayName": "Meta", "purpose": "Entry timestamps. Mono with tabular figures, quiet ink." },
+      "meta-caps": { "displayName": "Meta Caps", "purpose": "The idea count only. The sole uppercase, letter-spaced text in the interface." }
+    },
+    "shadows": [
+      {
+        "name": "composer-lift",
+        "value": "0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -12px rgba(0, 0, 0, 0.7)",
+        "purpose": "The system's only shadow. Makes the always-open writing surface read as the one thing lying on top of the board. Nothing below the composer casts a shadow."
+      }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(0.2, 0.8, 0.3, 1)", "purpose": "The single easing curve, used by every transition and the arrival animation." },
+      { "name": "state", "value": "120ms", "purpose": "Background, color, border-color and opacity changes on buttons, icon buttons, sort segments, and hover-revealed entry actions." },
+      { "name": "focus", "value": "140ms", "purpose": "The composer border turning periwinkle on :focus-within." },
+      { "name": "arrival", "value": "420ms", "purpose": "The one authored moment: a new idea landing on the board, fading in from translateY(-10px) with a 3px blur clearing at 60%." },
+      { "name": "skeleton", "value": "1.4s ease-in-out infinite", "purpose": "The loading bars' gradient sweep." }
+    ],
+    "breakpoints": [
+      { "name": "wide", "value": "768px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Composer",
+      "kind": "custom",
+      "refersTo": "composer",
+      "description": "The always-open writing surface: first line of the board, reused verbatim for in-place editing. Carries the system's only shadow.",
+      "html": "<div class=\"ds-composer\"><input class=\"ds-composer-title\" type=\"text\" placeholder=\"Title\" /><textarea class=\"ds-composer-text\" rows=\"4\" placeholder=\"Enter the description of your idea\"></textarea><div class=\"ds-composer-footer\"><p class=\"ds-composer-hint\">Cmd + Enter to save</p><div class=\"ds-composer-actions\"><button class=\"ds-btn ds-btn-ghost\" type=\"button\">Discard</button><button class=\"ds-btn ds-btn-primary\" type=\"button\">Save idea</button></div></div></div>",
+      "css": ".ds-composer { background-color: #121417; border: 1px solid #2c3238; border-radius: 10px; padding: 4px 0 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 28px -12px rgba(0,0,0,0.7); transition: border-color 140ms cubic-bezier(0.2,0.8,0.3,1); font-family: system-ui, sans-serif; } .ds-composer:focus-within { border-color: #8aa2ff; } .ds-composer-title, .ds-composer-text { width: 100%; background: transparent; border: none; color: #edeae0; font-family: inherit; padding: 12px 16px; caret-color: #8aa2ff; } .ds-composer-title { font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; } .ds-composer-text { font-size: 0.9375rem; line-height: 1.65; resize: none; min-height: 112px; display: block; } .ds-composer-title:focus-visible, .ds-composer-text:focus-visible { outline: none; } .ds-composer-title::placeholder, .ds-composer-text::placeholder { color: #838890; opacity: 1; } .ds-composer-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-top: 1px solid #212529; margin-top: 4px; padding: 12px 16px 0; } .ds-composer-hint { font-size: 0.8125rem; color: #838890; margin: 0; } .ds-composer-actions { display: flex; gap: 8px; margin-left: auto; }"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single primary action per context: saving an idea. Disabled until both title and description have content.",
+      "html": "<button class=\"ds-btn ds-btn-primary\" type=\"button\">Save idea</button>",
+      "css": ".ds-btn { font-family: system-ui, sans-serif; font-size: 0.875rem; line-height: 1; padding: 8px 14px; border-radius: 6px; border: 1px solid transparent; cursor: pointer; transition: background-color 120ms cubic-bezier(0.2,0.8,0.3,1), color 120ms cubic-bezier(0.2,0.8,0.3,1), border-color 120ms cubic-bezier(0.2,0.8,0.3,1), opacity 120ms cubic-bezier(0.2,0.8,0.3,1); } .ds-btn-primary { background-color: #8aa2ff; color: #0a1030; font-weight: 600; } .ds-btn-primary:hover { background-color: #a4b6ff; } .ds-btn-primary:focus-visible { outline: 2px solid #8aa2ff; outline-offset: 2px; } .ds-btn-primary:disabled { background-color: #2a3145; color: #a3adc4; cursor: not-allowed; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "The secondary action everywhere: Cancel, Discard, Keep it, Try again.",
+      "html": "<button class=\"ds-btn-ghost\" type=\"button\">Try again</button>",
+      "css": ".ds-btn-ghost { font-family: system-ui, sans-serif; font-size: 0.875rem; line-height: 1; padding: 8px 14px; border-radius: 6px; border: 1px solid #2c3238; background-color: transparent; color: #9ba0a6; cursor: pointer; transition: background-color 120ms cubic-bezier(0.2,0.8,0.3,1), color 120ms cubic-bezier(0.2,0.8,0.3,1), border-color 120ms cubic-bezier(0.2,0.8,0.3,1); } .ds-btn-ghost:hover { background-color: #161a1e; color: #edeae0; } .ds-btn-ghost:focus-visible { outline: 2px solid #8aa2ff; outline-offset: 2px; }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Destruction only: the confirm side of an inline delete. The one place red is spent.",
+      "html": "<button class=\"ds-btn-danger\" type=\"button\">Delete</button>",
+      "css": ".ds-btn-danger { font-family: system-ui, sans-serif; font-size: 0.875rem; line-height: 1; padding: 8px 14px; border-radius: 6px; border: 1px solid transparent; background-color: #f06a6f; color: #2a1416; font-weight: 600; cursor: pointer; transition: background-color 120ms cubic-bezier(0.2,0.8,0.3,1); } .ds-btn-danger:hover { background-color: #ff8286; } .ds-btn-danger:focus-visible { outline: 2px solid #8aa2ff; outline-offset: 2px; }"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "icon-button",
+      "description": "28px square action on an entry row: edit and delete. Authored 16px inline SVG, 1.5 stroke, round caps. The delete variant turns salmon on hover.",
+      "html": "<div class=\"ds-entry-actions\"><button class=\"ds-icon-btn\" type=\"button\" aria-label=\"edit idea\"><svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M11.2 2.3a1.6 1.6 0 0 1 2.3 2.3L5.6 12.4 2.5 13.5l1.1-3.1z\"/><path d=\"M10.1 3.4l2.3 2.3\"/></svg></button><button class=\"ds-icon-btn ds-icon-btn--danger\" type=\"button\" aria-label=\"delete idea\"><svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2.8 4.3h10.4\"/><path d=\"M6.2 4.3V3.1a.8.8 0 0 1 .8-.8h2a.8.8 0 0 1 .8.8v1.2\"/><path d=\"M12.1 4.3l-.5 8.3a1 1 0 0 1-1 .9H5.4a1 1 0 0 1-1-.9l-.5-8.3\"/><path d=\"M6.7 6.9v4\"/><path d=\"M9.3 6.9v4\"/></svg></button></div>",
+      "css": ".ds-entry-actions { display: flex; gap: 4px; } .ds-icon-btn { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 1px solid transparent; border-radius: 6px; background-color: transparent; color: #838890; cursor: pointer; transition: background-color 120ms cubic-bezier(0.2,0.8,0.3,1), color 120ms cubic-bezier(0.2,0.8,0.3,1), border-color 120ms cubic-bezier(0.2,0.8,0.3,1); } .ds-icon-btn:hover { background-color: #161a1e; border-color: #212529; color: #edeae0; } .ds-icon-btn:focus-visible { outline: 2px solid #8aa2ff; outline-offset: 2px; } .ds-icon-btn--danger:hover { color: #f06a6f; }"
+    },
+    {
+      "name": "Sort Control",
+      "kind": "nav",
+      "refersTo": "sort",
+      "description": "Three-segment inline group (Added / Newest / A-Z), right-aligned on the header line. Appears only once the board holds more than two ideas.",
+      "html": "<div class=\"ds-sort\" role=\"group\" aria-label=\"Sort ideas\"><button class=\"ds-sort-option\" type=\"button\" aria-pressed=\"true\">Added</button><button class=\"ds-sort-option\" type=\"button\" aria-pressed=\"false\">Newest</button><button class=\"ds-sort-option\" type=\"button\" aria-pressed=\"false\">A-Z</button></div>",
+      "css": ".ds-sort { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid #212529; border-radius: 6px; } .ds-sort-option { font-family: system-ui, sans-serif; font-size: 0.8125rem; line-height: 1; padding: 6px 10px; border: none; border-radius: 4px; background-color: transparent; color: #838890; cursor: pointer; transition: background-color 120ms cubic-bezier(0.2,0.8,0.3,1), color 120ms cubic-bezier(0.2,0.8,0.3,1); } .ds-sort-option:hover { color: #edeae0; } .ds-sort-option:focus-visible { outline: 2px solid #8aa2ff; outline-offset: 2px; } .ds-sort-option[aria-pressed='true'] { background-color: #161a1e; color: #edeae0; }"
+    },
+    {
+      "name": "Entry Row",
+      "kind": "card",
+      "refersTo": "entry",
+      "description": "One idea in the continuous hairline-separated list. Actions are hidden until row hover or keyboard focus; timestamp is mono with tabular figures.",
+      "html": "<ul class=\"ds-entries\"><li class=\"ds-entry\"><div class=\"ds-entry-head\"><p class=\"ds-entry-title\">Cold open: the two-minute build</p><div class=\"ds-entry-actions-row\"><button class=\"ds-icon-btn-row\" type=\"button\" aria-label=\"edit\"><svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M11.2 2.3a1.6 1.6 0 0 1 2.3 2.3L5.6 12.4 2.5 13.5l1.1-3.1z\"/><path d=\"M10.1 3.4l2.3 2.3\"/></svg></button></div></div><p class=\"ds-entry-text\">Open on the finished thing, then cut back to the empty editor. No talking for the first fifteen seconds.</p><p class=\"ds-entry-time\">Written 4 Sep 2026</p></li></ul>",
+      "css": ".ds-entries { list-style: none; padding: 0; margin: 0; border-top: 1px solid #212529; font-family: system-ui, sans-serif; } .ds-entry { padding: 24px 0; border-bottom: 1px solid #212529; } .ds-entry:last-child { border-bottom: none; } .ds-entry-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; } .ds-entry-title { margin: 0; font-weight: 600; font-size: 1rem; line-height: 1.4; letter-spacing: -0.01em; color: #edeae0; text-wrap: pretty; overflow-wrap: anywhere; } .ds-entry-actions-row { display: flex; gap: 4px; flex-shrink: 0; opacity: 0; transition: opacity 120ms cubic-bezier(0.2,0.8,0.3,1); } .ds-entry:hover .ds-entry-actions-row, .ds-entry-actions-row:focus-within { opacity: 1; } .ds-icon-btn-row { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #838890; cursor: pointer; transition: background-color 120ms, color 120ms, border-color 120ms; } .ds-icon-btn-row:hover { background-color: #161a1e; border-color: #212529; color: #edeae0; } .ds-entry-text { margin: 8px 0 0; max-width: 68ch; font-size: 0.9375rem; line-height: 1.65; color: #d3d0c8; text-wrap: pretty; white-space: pre-wrap; overflow-wrap: anywhere; } .ds-entry-time { margin: 14px 0 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; font-size: 0.75rem; color: #838890; }"
+    },
+    {
+      "name": "Inline Delete Confirmation",
+      "kind": "custom",
+      "refersTo": "entry-confirm",
+      "description": "Deletion confirms inside the entry, never in a dialog. Slate bar with a strong hairline, ghost keep and danger delete pushed right.",
+      "html": "<div class=\"ds-confirm\" role=\"alert\"><p>Delete this idea?</p><div class=\"ds-confirm-actions\"><button class=\"ds-confirm-ghost\" type=\"button\">Keep it</button><button class=\"ds-confirm-danger\" type=\"button\">Delete</button></div></div>",
+      "css": ".ds-confirm { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 16px; padding: 12px 14px; border: 1px solid #2c3238; border-radius: 6px; background-color: #121417; font-family: system-ui, sans-serif; font-size: 0.875rem; color: #9ba0a6; } .ds-confirm p { margin: 0; } .ds-confirm-actions { display: flex; gap: 8px; margin-left: auto; } .ds-confirm-ghost { font: inherit; padding: 8px 14px; border-radius: 6px; border: 1px solid #2c3238; background: transparent; color: #9ba0a6; cursor: pointer; transition: background-color 120ms, color 120ms; } .ds-confirm-ghost:hover { background-color: #161a1e; color: #edeae0; } .ds-confirm-danger { font: inherit; font-weight: 600; padding: 8px 14px; border-radius: 6px; border: 1px solid transparent; background-color: #f06a6f; color: #2a1416; cursor: pointer; transition: background-color 120ms; } .ds-confirm-danger:hover { background-color: #ff8286; }"
+    },
+    {
+      "name": "Error Notice",
+      "kind": "custom",
+      "refersTo": "notice-error",
+      "description": "In-measure error band for an unreachable board or a failed write, with an inline ghost retry. Never a toast, never an overlay.",
+      "html": "<div class=\"ds-notice\" role=\"alert\"><span>Could not reach the idea board. Nothing written now will be saved.</span><button class=\"ds-notice-btn\" type=\"button\">Try again</button></div>",
+      "css": ".ds-notice { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 20px; padding: 12px 14px; border: 1px solid #4a2a2c; border-radius: 6px; background-color: #1a1214; color: #f3c9cb; font-family: system-ui, sans-serif; font-size: 0.875rem; line-height: 1.5; } .ds-notice-btn { font: inherit; padding: 8px 14px; border-radius: 6px; border: 1px solid #2c3238; background: transparent; color: #9ba0a6; cursor: pointer; transition: background-color 120ms, color 120ms; } .ds-notice-btn:hover { background-color: #161a1e; color: #edeae0; }"
+    },
+    {
+      "name": "Loading Skeleton",
+      "kind": "custom",
+      "refersTo": "entry",
+      "description": "Three bars standing in for the list while the board loads, sweeping a slate gradient at descending widths.",
+      "html": "<div class=\"ds-skeletons\" role=\"status\" aria-label=\"Loading ideas\"><div class=\"ds-skeleton\"></div><div class=\"ds-skeleton ds-skeleton--2\"></div><div class=\"ds-skeleton ds-skeleton--3\"></div></div>",
+      "css": ".ds-skeletons { border-top: 1px solid #212529; } .ds-skeleton { height: 16px; margin: 32px 0; border-radius: 4px; background: linear-gradient(90deg, #121417 0%, #161a1e 50%, #121417 100%); background-size: 200% 100%; animation: ds-skeleton 1.4s ease-in-out infinite; } .ds-skeleton--2 { width: 72%; } .ds-skeleton--3 { width: 45%; } @keyframes ds-skeleton { to { background-position: -200% 0; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Open Notebook, Left on the Desk in a Dark Room",
+    "overview": "IdeaBoard is the category standard played straight at a high craft level. It is a near-black graphite room holding one lit page: the composer. Nothing decorates; the ideas themselves are the only furniture. There is exactly one raised surface tier above the ground, one accent reserved for the primary action, and one red that is earned only when something is about to be destroyed. Everything else is separated by 1px hairlines.\n\nDensity is high and the measure is narrow (720px). The page opens with deep top air (72px, 112px at 768px and up) so the wordmark and the composer land in the upper third rather than at the very edge of the viewport, then tightens immediately: entries are 24px-padded rows in one continuous hairline-separated list, not cards in a grid. Type is a grotesk at a tight, short ramp — five steps between 0.75rem and 1.375rem — with monospace held back for timestamps and the idea count alone, so numbers are the only place the voice changes.\n\nMotion is nearly absent by design. Interaction transitions run 120-140ms; one authored 420ms arrival animation plays when an idea lands on the board, and everything already on the board stays still. The interface refuses the uniform card grid, the floating \"+\" button, and the modal-to-add: writing happens in place, and an edit commits in place too.",
+    "keyCharacteristics": [
+      "Near-black graphite ground with exactly one raised surface tier",
+      "1px hairlines do all separation work; no dividers rendered as gaps or rules with color",
+      "One periwinkle accent, primary action only; one red, destructive confirmation only",
+      "Warm off-white ink on cold graphite — the only warmth in the palette",
+      "High density, narrow single measure, list-not-grid",
+      "Motion under 200ms everywhere except the single 420ms arrival"
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Periwinkle marks the primary action, the focused composer, the caret, and the focus ring. If a fifth use appears, the accent has stopped meaning \"this is the thing to press.\"", "section": "colors" },
+      { "name": "The Earned Red Rule", "body": "Red is spent once per interaction, on the confirmation that destroys something. An error notice is not destruction: it gets its own dimmed maroon skin, not the accent red.", "section": "colors" },
+      { "name": "The Hairline Rule", "body": "All separation is a 1px line in Hairline or Hairline Strong. Never separate with a filled band, a heavier rule, or a color shift in the ground.", "section": "colors" },
+      { "name": "The Numbers-Only Mono Rule", "body": "The monospace face carries the idea count and the timestamps and nothing else. Mono on a label, a heading, or body copy breaks the world.", "section": "typography" },
+      { "name": "The Two Weights Rule", "body": "There are two weights: 400 and 600. Emphasis is achieved by switching family (Regular to Semibold) or by moving ink one step brighter, never by a third weight, italics, or letter-spaced small caps outside the idea count.", "section": "typography" },
+      { "name": "The Single Measure Rule", "body": "Everything — header, composer, list, notices — shares one 720px column. No full-bleed bands, no sidebars, no second column at any width.", "section": "layout" },
+      { "name": "The One Shadow Rule", "body": "Nothing below the composer casts a shadow. If a new surface needs separating, give it the raised slate surface and a hairline, not elevation.", "section": "elevation" },
+      { "name": "The No-Pill Rule", "body": "Radius never exceeds 10px and never becomes a capsule. Roundness is softening, not shape.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do put every new surface in the single 720px measure and separate it with a 1px hairline.",
+      "Do keep the accent to the primary action, the focused composer, the caret, and the focus ring; give everything else Quiet Ink or a Slate Hover wash.",
+      "Do give interactive objects a 1px solid transparent border at rest so a hover state colors it without shifting layout.",
+      "Do reuse the composer component for any writing task, including editing in place.",
+      "Do keep transitions at 120-140ms on cubic-bezier(0.2, 0.8, 0.3, 1), and reserve the 420ms arrival for an idea landing on the board.",
+      "Do set numeric text (counts, timestamps) in the mono stack with tabular-nums.",
+      "Do provide a visible 2px periwinkle :focus-visible ring at 2px offset on everything focusable, and keep hover-revealed controls reachable by keyboard.",
+      "Do cap read text at 68ch and preserve authored line breaks."
+    ],
+    "donts": [
+      "Don't introduce a card grid, a floating action button, or a modal — writing and editing happen in place, on the board.",
+      "Don't add a shadow to anything other than the composer.",
+      "Don't add a second accent hue, or reuse the salmon red for anything but destruction.",
+      "Don't exceed a 10px radius or build a pill/capsule control.",
+      "Don't use uppercase or letter-spaced type anywhere except the idea count.",
+      "Don't use mono for anything that is not a number.",
+      "Don't introduce a third font weight, italics, or a native <select>; the sort control is a segmented button group.",
+      "Don't ship an icon as a font glyph, an emoji, or an <img> — icons are authored inline SVG on a 16px box, 1.5 stroke, round caps and joins, drawn to the same grid.",
+      "Don't light the interface. The dark ground is a product commitment, not a theme."
+    ]
+  }
+}

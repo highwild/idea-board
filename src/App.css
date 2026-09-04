@@ -330,12 +330,7 @@ h1 {
 .entries {
   list-style: none;
   padding: 0;
-  margin: 0;
-}
-
-
-.entries {
-  margin-top: 2rem;
+  margin: 2rem 0 0;
   border-top: 1px solid var(--line);
 }
 
