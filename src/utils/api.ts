@@ -40,6 +40,7 @@ export function createIdea(idea: {
   title: string;
   text: string;
   time: number;
+  tags?: string[];
 }): Promise<IdeasType> {
   return request<IdeasType>(BASE, {
     method: 'POST',
@@ -50,7 +51,7 @@ export function createIdea(idea: {
 
 export function updateIdea(
   id: string,
-  idea: { title: string; text: string; time: number }
+  idea: { title: string; text: string; time: number; tags?: string[] }
 ): Promise<IdeasType> {
   return request<IdeasType>(`${BASE}/${encodeURIComponent(id)}`, {
     method: 'PUT',
@@ -63,7 +64,7 @@ export function updateIdea(
 // the idea was written on
 export function patchIdea(
   id: string,
-  patch: { status?: StatusType; notes?: string }
+  patch: { status?: StatusType; notes?: string; tags?: string[] }
 ): Promise<IdeasType> {
   return request<IdeasType>(`${BASE}/${encodeURIComponent(id)}`, {
     method: 'PATCH',

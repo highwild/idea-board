@@ -16,6 +16,7 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
   const [filter, setFilter] = useState<StatusType | 'all'>('all')
+  const [tagFilter, setTagFilter] = useState<string | null>(null)
 
   // the one authored moment on this surface: an idea arriving on the board.
   // everything already there stays still.
@@ -23,10 +24,14 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
   const seenIds = useRef<string[] | null>(null)
 
   const written = ideas.filter((idea) => idea.title)
-  const shown =
+  const byStatus =
     filter === 'all'
       ? written
       : written.filter((idea) => (idea.status ?? 'todo') === filter)
+
+  const shown = tagFilter
+    ? byStatus.filter((idea) => (idea.tags ?? []).includes(tagFilter))
+    : byStatus
 
   const countFor = (value: StatusType | 'all') =>
     value === 'all'
@@ -76,9 +81,33 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
     <>
       {filterBar}
 
+      {tagFilter && (
+        <div className='tag-filter-bar'>
+          <p>
+            Tagged <strong>{tagFilter}</strong>
+          </p>
+          <button
+            type='button'
+            className='btn btn-ghost'
+            onClick={() => setTagFilter(null)}>
+            Clear tag
+          </button>
+        </div>
+      )}
+
       {shown.length === 0 && (
         <p className='board-empty board-empty--filtered'>
-          Nothing is {filter === 'all' ? 'here' : STATUS_LABELS[filter as StatusType].toLowerCase()} right now.
+          {tagFilter
+            ? `Nothing tagged ${tagFilter}${
+                filter === 'all'
+                  ? ''
+                  : ` is ${STATUS_LABELS[filter as StatusType].toLowerCase()}`
+              }.`
+            : `Nothing is ${
+                filter === 'all'
+                  ? 'here'
+                  : STATUS_LABELS[filter as StatusType].toLowerCase()
+              } right now.`}
         </p>
       )}
 
@@ -87,6 +116,7 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
         const { title, text, updated, id, time } = idea
         const status: StatusType = idea.status ?? 'todo'
         const notes = idea.notes ?? ''
+        const tags = idea.tags ?? []
         const isEditing = id !== null && editingId === id
         const isConfirming = id !== null && confirmingId === id
 
@@ -96,13 +126,15 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
               <Form
                 initialTitle={title}
                 initialText={text}
+                initialTags={idea.tags ?? []}
                 submitLabel='Save changes'
                 onCancel={() => setEditingId(null)}
-                onSubmit={(newTitle, newText) => {
+                onSubmit={(newTitle, newText, newTags) => {
                   dispatch({
                     type: 'update',
                     title: newTitle,
                     text: newText,
+                    tags: newTags,
                     id,
                   })
                   setEditingId(null)
@@ -147,6 +179,24 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
                 </button>
               </div>
             </div>
+
+            {tags.length > 0 && (
+              <ul className='tags'>
+                {tags.map((tag) => (
+                  <li key={tag}>
+                    <button
+                      type='button'
+                      className='tag tag--filter'
+                      aria-pressed={tagFilter === tag}
+                      onClick={() =>
+                        setTagFilter((current) => (current === tag ? null : tag))
+                      }>
+                      {tag}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
 
             {text && (
               <p data-testid='card-text' className='entry-text'>

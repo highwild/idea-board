@@ -17,8 +17,8 @@ function CreateIdea() {
     <Form
       submitLabel='Save idea'
       onCancel={() => null}
-      onSubmit={(title, text) => {
-        dispatch({ type: 'submit', title, text, id: uuid() })
+      onSubmit={(title, text, tags) => {
+        dispatch({ type: 'submit', title, text, tags, id: uuid() })
       }}
     />
   )

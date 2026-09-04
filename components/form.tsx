@@ -1,13 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 
 //
+
+import TagInput from './tagInput'
+import { IdeasContext } from '../src/App'
+import { SUGGESTED_TAGS } from '../src/types'
 
 interface FormPropType {
   initialTitle?: string;
   initialText?: string;
+  initialTags?: string[];
   submitLabel: string;
   cancelLabel?: string;
-  onSubmit: (title: string, text: string) => void;
+  onSubmit: (title: string, text: string, tags: string[]) => void;
   onCancel: () => void;
 }
 
@@ -20,6 +25,7 @@ function Form(formProps: FormPropType) {
   const {
     initialTitle = '',
     initialText = '',
+    initialTags = [],
     submitLabel,
     cancelLabel = 'Cancel',
     onSubmit,
@@ -28,10 +34,23 @@ function Form(formProps: FormPropType) {
 
   const [title, setTitle] = useState(initialTitle)
   const [text, setText] = useState(initialText)
+  const [tags, setTags] = useState<string[]>(initialTags)
   const textRef = useRef<HTMLTextAreaElement>(null)
+  const { ideas } = useContext(IdeasContext)
+
+  // whatever is already on the board is worth suggesting before the defaults
+  const suggestions = Array.from(
+    new Set([
+      ...ideas.flatMap((idea) => idea.tags ?? []),
+      ...SUGGESTED_TAGS,
+    ])
+  )
 
   const canSubmit = title.trim().length > 0 && text.trim().length > 0
-  const isDirty = title !== initialTitle || text !== initialText
+  const isDirty =
+    title !== initialTitle ||
+    text !== initialText ||
+    tags.join() !== initialTags.join()
 
   //
 
@@ -48,9 +67,10 @@ function Form(formProps: FormPropType) {
 
   const handleSubmit = () => {
     if (!canSubmit) return
-    onSubmit(title.trim(), text.trim())
+    onSubmit(title.trim(), text.trim(), tags)
     setTitle('')
     setText('')
+    setTags([])
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -88,6 +108,10 @@ function Form(formProps: FormPropType) {
         rows={4}
         onChange={(e) => setText(e.target.value)}
       />
+
+      <div className='composer-tags'>
+        <TagInput tags={tags} suggestions={suggestions} onChange={setTags} />
+      </div>
 
       <div className='composer-footer'>
         <p className='composer-hint'>

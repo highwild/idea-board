@@ -33,7 +33,7 @@ async function readBody(request: Request): Promise<unknown> {
 
 async function listIdeas(env: Env): Promise<Response> {
   const { results } = await env.DB.prepare(
-    'SELECT id, title, text, updated, time, status, notes FROM ideas ORDER BY time DESC'
+    'SELECT id, title, text, updated, time, status, notes, tags FROM ideas ORDER BY time DESC'
   ).all<IdeaRow>()
   return json((results ?? []).map(rowToIdea))
 }
@@ -49,9 +49,17 @@ async function createIdea(request: Request, env: Env): Promise<Response> {
   }
 
   await env.DB.prepare(
-    'INSERT INTO ideas (id, title, text, time, updated, status, notes) VALUES (?, ?, ?, ?, 0, ?, ?)'
+    'INSERT INTO ideas (id, title, text, time, updated, status, notes, tags) VALUES (?, ?, ?, ?, 0, ?, ?, ?)'
   )
-    .bind(idea.id, idea.title, idea.text, idea.time, idea.status, idea.notes)
+    .bind(
+      idea.id,
+      idea.title,
+      idea.text,
+      idea.time,
+      idea.status,
+      idea.notes,
+      JSON.stringify(idea.tags)
+    )
     .run()
 
   return json({ ...idea, updated: false }, 201)
@@ -66,9 +74,17 @@ async function updateIdea(
 
   // a null status or notes leaves whatever is already stored alone
   const row = await env.DB.prepare(
-    'UPDATE ideas SET title = ?, text = ?, time = ?, updated = 1, status = COALESCE(?, status), notes = COALESCE(?, notes) WHERE id = ? RETURNING id, title, text, updated, time, status, notes'
+    'UPDATE ideas SET title = ?, text = ?, time = ?, updated = 1, status = COALESCE(?, status), notes = COALESCE(?, notes), tags = COALESCE(?, tags) WHERE id = ? RETURNING id, title, text, updated, time, status, notes, tags'
   )
-    .bind(payload.title, payload.text, payload.time, payload.status, payload.notes, id)
+    .bind(
+      payload.title,
+      payload.text,
+      payload.time,
+      payload.status,
+      payload.notes,
+      payload.tags === null ? null : JSON.stringify(payload.tags),
+      id
+    )
     .first<IdeaRow>()
 
   if (!row) return error('no idea with that id', 404)
@@ -83,9 +99,14 @@ async function patchIdea(
   const payload = parsePatch(await readBody(request))
 
   const row = await env.DB.prepare(
-    'UPDATE ideas SET status = COALESCE(?, status), notes = COALESCE(?, notes) WHERE id = ? RETURNING id, title, text, updated, time, status, notes'
+    'UPDATE ideas SET status = COALESCE(?, status), notes = COALESCE(?, notes), tags = COALESCE(?, tags) WHERE id = ? RETURNING id, title, text, updated, time, status, notes, tags'
   )
-    .bind(payload.status, payload.notes, id)
+    .bind(
+      payload.status,
+      payload.notes,
+      payload.tags === null ? null : JSON.stringify(payload.tags),
+      id
+    )
     .first<IdeaRow>()
 
   if (!row) return error('no idea with that id', 404)

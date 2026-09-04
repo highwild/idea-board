@@ -59,17 +59,20 @@ function App() {
             title: action.title,
             text: action.text,
             time: action.time,
+            tags: action.tags,
           })
         } else if (action.type === 'update') {
           await api.updateIdea(action.id, {
             title: action.title,
             text: action.text,
             time: action.time,
+            tags: action.tags,
           })
         } else if (action.type === 'patch') {
           await api.patchIdea(action.id, {
             status: action.status,
             notes: action.notes,
+            tags: action.tags,
           })
         } else if (action.type === 'delete') {
           await api.deleteIdea(action.id)

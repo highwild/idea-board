@@ -10,6 +10,7 @@ export interface Idea {
   time: number
   status: Status
   notes: string
+  tags: string[]
 }
 
 export interface IdeaRow {
@@ -20,6 +21,7 @@ export interface IdeaRow {
   time: number
   status: string
   notes: string
+  tags: string
 }
 
 const UUID_RE =
@@ -28,9 +30,58 @@ const UUID_RE =
 export const TITLE_MAX = 200
 export const TEXT_MAX = 5000
 export const NOTES_MAX = 20000
+export const TAG_MAX = 24
+export const TAGS_MAX = 12
 
 function toStatus(value: unknown): Status {
   return STATUSES.includes(value as Status) ? (value as Status) : 'todo'
+}
+
+// tags are stored as a JSON array in one TEXT column; a row written before the
+// column existed, or by hand, must never take the board down
+function parseTags(value: string | null): string[] {
+  if (!value) return []
+  try {
+    const parsed = JSON.parse(value)
+    if (!Array.isArray(parsed)) return []
+    return parsed.filter((tag): tag is string => typeof tag === 'string')
+  } catch {
+    return []
+  }
+}
+
+// trimmed, lowercased, de-duplicated, order preserved
+export function normaliseTags(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    throw new ValidationError('tags must be an array of strings')
+  }
+  if (value.length > TAGS_MAX) {
+    throw new ValidationError(`an idea cannot carry more than ${TAGS_MAX} tags`)
+  }
+
+  const seen = new Set<string>()
+  const tags: string[] = []
+
+  value.forEach((entry) => {
+    if (typeof entry !== 'string') {
+      throw new ValidationError('tags must be an array of strings')
+    }
+    const tag = entry.trim().toLowerCase()
+    if (tag.length === 0) return
+    if (tag.length > TAG_MAX) {
+      throw new ValidationError(`a tag cannot be longer than ${TAG_MAX} characters`)
+    }
+    if (seen.has(tag)) return
+    seen.add(tag)
+    tags.push(tag)
+  })
+
+  return tags
+}
+
+function optionalTags(value: unknown): string[] | null {
+  if (value === undefined || value === null) return null
+  return normaliseTags(value)
 }
 
 export function rowToIdea(row: IdeaRow): Idea {
@@ -42,6 +93,7 @@ export function rowToIdea(row: IdeaRow): Idea {
     time: row.time,
     status: toStatus(row.status),
     notes: row.notes ?? '',
+    tags: parseTags(row.tags),
   }
 }
 
@@ -95,6 +147,7 @@ export interface CreatePayload {
   time: number
   status: Status
   notes: string
+  tags: string[]
 }
 
 export interface UpdatePayload {
@@ -103,11 +156,13 @@ export interface UpdatePayload {
   time: number
   status: Status | null
   notes: string | null
+  tags: string[] | null
 }
 
 export interface PatchPayload {
   status: Status | null
   notes: string | null
+  tags: string[] | null
 }
 
 // Unknown fields are stripped rather than rejected.
@@ -126,6 +181,7 @@ export function parseCreate(body: unknown): CreatePayload {
     time: normaliseTime(raw.time),
     status: optionalStatus(raw.status) ?? 'todo',
     notes: optionalNotes(raw.notes) ?? '',
+    tags: optionalTags(raw.tags) ?? [],
   }
 }
 
@@ -140,6 +196,7 @@ export function parseUpdate(body: unknown): UpdatePayload {
     time: normaliseTime(raw.time),
     status: optionalStatus(raw.status),
     notes: optionalNotes(raw.notes),
+    tags: optionalTags(raw.tags),
   }
 }
 
@@ -152,8 +209,9 @@ export function parsePatch(body: unknown): PatchPayload {
   const raw = body as Record<string, unknown>
   const status = optionalStatus(raw.status)
   const notes = optionalNotes(raw.notes)
-  if (status === null && notes === null) {
-    throw new ValidationError('a patch must set status, notes, or both')
+  const tags = optionalTags(raw.tags)
+  if (status === null && notes === null && tags === null) {
+    throw new ValidationError('a patch must set status, notes or tags')
   }
-  return { status, notes }
+  return { status, notes, tags }
 }

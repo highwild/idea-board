@@ -1,4 +1,22 @@
 /* eslint-disable prettier/prettier */
+export const TAG_MAX = 24
+export const TAGS_MAX = 12
+
+// a starting vocabulary only - any tag can be typed, and whatever is already
+// on the board is suggested alongside these
+export const SUGGESTED_TAGS = [
+  'video',
+  'short',
+  'post',
+  'script',
+  'thumbnail',
+  'series',
+  'collab',
+  'research',
+  'b-roll',
+  'sponsor',
+]
+
 export const STATUSES = ['planned', 'todo', 'in-progress', 'done'] as const
 
 export type StatusType = (typeof STATUSES)[number]
@@ -20,6 +38,7 @@ export interface ActionType {
   updated?:boolean,
   status?: StatusType,
   notes?: string,
+  tags?: string[],
   ideas?: IdeasType[]
 }
 
@@ -31,6 +50,7 @@ export interface IdeasType {
   time: number;
   status?: StatusType;
   notes?: string;
+  tags?: string[];
 }
 
 export interface GlobalStateType{

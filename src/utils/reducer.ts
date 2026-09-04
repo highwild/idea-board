@@ -22,6 +22,7 @@ export default function reducer(ideas: IdeasType[], action: ActionType) {
           updated: false,
           status: action.status ?? 'todo',
           notes: action.notes ?? '',
+          tags: action.tags ?? [],
         },
         ...ideas,
       ]
@@ -37,6 +38,7 @@ export default function reducer(ideas: IdeasType[], action: ActionType) {
             text: action.text,
             updated: true,
             time: action.time ?? Date.now(),
+            tags: action.tags ?? idea.tags,
           }
         }
         return idea
@@ -52,6 +54,7 @@ export default function reducer(ideas: IdeasType[], action: ActionType) {
             ...idea,
             status: action.status ?? idea.status,
             notes: action.notes ?? idea.notes,
+            tags: action.tags ?? idea.tags,
           }
         }
         return idea

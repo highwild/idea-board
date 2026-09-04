@@ -431,6 +431,23 @@ entry itself.
 **The One Segmented Rule:** a new three-way choice reuses this control rather than inventing a
 menu, a select, or a set of pills.
 
+### Tags
+Small rectangular chips at 4px radius with a `{colors.line}` hairline, transparent ground and
+`{colors.text-2}` ink, set at 0.75rem in lowercase. They sit between an entry's title and its
+description, so the label reads before the idea does. Never pills, never coloured: the status
+field is the board's only categorical colour, and tags earn attention by being read.
+
+On an entry, each chip is a button: pressing one filters the board to that tag and pressing it
+again clears it, with the active chip taking the slate wash. A tag filter announces itself in a
+slate bar above the list carrying the tag name and a ghost "Clear tag", because a filter that
+hides work must say it is on. Tag and status filters narrow together.
+
+In the composer, the same chips become writable: each carries a small remove control, and a
+borderless field sits inline after them where Enter or comma commits a tag and Backspace on an
+empty field removes the last. Suggestions come from the tags already on the board first and a
+short starting vocabulary second. The field takes no focus ring of its own (the composer's
+border already shows focus) and the browser's datalist arrow is removed.
+
 ### Notes disclosure
 Each entry carries a collapsed `Notes` toggle in quiet ink with a chevron that rotates from
 -90deg to 0 over 160ms, and a 4px accent dot when notes exist. Open, it reveals a slate panel

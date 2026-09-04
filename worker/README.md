@@ -41,12 +41,14 @@ npm run cf:deploy
 | GET    | `/api/ideas`     | -                           | `200` ideas, newest first       |
 | POST   | `/api/ideas`     | `{ id, title, text, time }` | `201` created idea, `409` if id exists |
 | PUT    | `/api/ideas/:id` | `{ title, text, time }`     | `200` updated idea, `404` if missing   |
-| PATCH  | `/api/ideas/:id` | `{ status?, notes? }`       | `200` updated idea, `404` if missing   |
+| PATCH  | `/api/ideas/:id` | `{ status?, notes?, tags? }` | `200` updated idea, `404` if missing  |
 | DELETE | `/api/ideas/:id` | -                           | `204`, `404` if missing         |
 
 Each idea is `{ id, title, text, updated, time, status, notes }`, where `updated` is a
-boolean, `status` is one of `planned`, `todo`, `in-progress` or `done`, and `notes` is free text
-(20000 characters max, may be empty).
+boolean, `status` is one of `planned`, `todo`, `in-progress` or `done`, `notes` is free text
+(20000 characters max, may be empty), and `tags` is an array of up to 12 lowercase strings of
+24 characters each, stored as JSON in one column. Tags are trimmed, lowercased and
+de-duplicated on write, and empty strings are dropped.
 
 `PUT` is a full edit: it rewrites the title, text and date, and sets `updated`. `PATCH`
 changes only status and/or notes and deliberately leaves the date and `updated` flag alone,

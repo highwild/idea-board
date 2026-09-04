@@ -103,6 +103,7 @@ test('Check editing an idea happens in place and dispatches the update', async (
     type: 'update',
     title: 'monday',
     text: 'description',
+    tags: [],
     id: 'sunday',
   })
 })
@@ -232,4 +233,48 @@ test('Check a filter with nothing in it says so instead of looking broken', asyn
 
   expect(screen.getByText('Nothing is done right now.')).toBeInTheDocument()
   expect(screen.queryByText('shoot this week')).not.toBeInTheDocument()
+})
+
+test('Check tags are shown and clicking one filters the board to it', async () => {
+  const user = userEvent.setup()
+
+  const ideas = [
+    { title: 'guard run', id: 'a', text: 'ready', updated: false, time: 0, status: 'todo' as const, notes: '', tags: ['video', 'script'] },
+    { title: 'thread about signalling', id: 'b', text: 'text only', updated: false, time: 0, status: 'todo' as const, notes: '', tags: ['post'] },
+  ]
+
+  render(<Ideas />, { ideas })
+
+  expect(screen.getByText('video')).toBeInTheDocument()
+  expect(screen.getByText('post')).toBeInTheDocument()
+
+  await user.click(screen.getByRole('button', { name: 'video' }))
+
+  expect(screen.getByText('guard run')).toBeInTheDocument()
+  expect(screen.queryByText('thread about signalling')).not.toBeInTheDocument()
+
+  // clicking the same tag again clears it
+  await user.click(screen.getByRole('button', { name: 'video' }))
+  expect(screen.getByText('thread about signalling')).toBeInTheDocument()
+})
+
+test('Check a tag filter and a status filter narrow together', async () => {
+  const user = userEvent.setup()
+
+  const ideas = [
+    { title: 'guard run', id: 'a', text: 'ready', updated: false, time: 0, status: 'done' as const, notes: '', tags: ['video'] },
+    { title: 'circle line', id: 'b', text: 'ready', updated: false, time: 0, status: 'todo' as const, notes: '', tags: ['video'] },
+  ]
+
+  render(<Ideas />, { ideas })
+
+  await user.click(screen.getAllByRole('button', { name: 'video' })[0])
+  const filters = screen.getByLabelText('Show ideas by status')
+  await user.click(within(filters).getByText('Done'))
+
+  expect(screen.getByText('guard run')).toBeInTheDocument()
+  expect(screen.queryByText('circle line')).not.toBeInTheDocument()
+
+  await user.click(within(filters).getByText('In progress'))
+  expect(screen.getByText('Nothing tagged video is in progress.')).toBeInTheDocument()
 })
