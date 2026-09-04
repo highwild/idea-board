@@ -1,8 +1,18 @@
 {
   "name": "idea-board",
   "compatibility_date": "2026-09-04",
+  "main": "worker/index.ts",
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "single-page-application"
-  }
+    "not_found_handling": "single-page-application",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "idea-board",
+      // PLACEHOLDER: replace with the id printed by `wrangler d1 create idea-board`
+      "database_id": "REPLACE_WITH_DATABASE_ID"
+    }
+  ]
 }
