@@ -1,34 +1,39 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 
 //
 
-import Form from '../components/form'
+import { v4 as uuid } from 'uuid'
+import Form from './form'
+import { IdeasContext } from '../src/App'
 
 //
 
+// The composer is the first line of the board, never a modal: writing an idea
+// down costs one click and never covers what is already there.
 function CreateIdea() {
-  const [isFormVisible, setIsFormVisible] = useState(false)
+  const { dispatch } = useContext(IdeasContext)
+  const [isOpen, setIsOpen] = useState(false)
+
+  if (!isOpen) {
+    return (
+      <button
+        type='button'
+        className='composer-trigger'
+        onClick={() => setIsOpen(true)}>
+        Write an idea
+      </button>
+    )
+  }
+
   return (
-    <div className='container flex center-vr  flex-vertical'>
-      <h1>IdeaBoard</h1>
-      <div className='createWrapper flex flex-vertical center-vr mt-2'>
-        {isFormVisible ? (
-          <Form
-            setIsFormVisible={setIsFormVisible}
-            isUpdateForm={false}
-            selectedItem={null}
-          />
-        ) : (
-          <button
-            className='placeholder-btn'
-            onClick={() => {
-              setIsFormVisible(!isFormVisible)
-            }}>
-            Capture and save your ideas
-          </button>
-        )}
-      </div>
-    </div>
+    <Form
+      submitLabel='Save idea'
+      onCancel={() => setIsOpen(false)}
+      onSubmit={(title, text) => {
+        dispatch({ type: 'submit', title, text, id: uuid() })
+        setIsOpen(false)
+      }}
+    />
   )
 }
 

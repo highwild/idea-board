@@ -11,7 +11,7 @@ test('Check idea is rendered from global state', async () => {
   const description = 'Description of Idea One'
 
   //
-  render(<Ideas modalVisibility={false} />, {
+  render(<Ideas />, {
     ideas: [{ title, id: null, text: description, updated: false, time: 0 }],
   })
 
@@ -26,7 +26,7 @@ test('Check updated text is rendered from updated idea', async () => {
   const description = 'Description of asdasdsadadsd One'
 
   //
-  render(<Ideas modalVisibility={false} />, {
+  render(<Ideas />, {
     ideas: [{ title, id: null, text: description, updated: true, time: 0 }],
   })
 
@@ -38,7 +38,7 @@ test('Check updated text is rendered from updated idea', async () => {
   expect(screen.queryByText('Created on : null')).not.toBeInTheDocument()
 })
 
-test('Check delete is called with the right id', async () => {
+test('Check delete is called with the right id once confirmed', async () => {
   const user = userEvent.setup()
   const description = 'Description of asdasdsadadsd One'
   const mockDispatch = jest.fn()
@@ -49,32 +49,59 @@ test('Check delete is called with the right id', async () => {
     { title: 'tuesday', id: 'tuesday', text: description, updated: true, time: 0 },
   ]
   //
-  render(<Ideas modalVisibility={false} />, {
+  render(<Ideas />, {
     ideas,
     dispatch: mockDispatch,
   })
 
-  await user.click(screen.getByAltText(`delete ${ideas[1].title}`))
+  await user.click(screen.getByLabelText(`delete ${ideas[1].title}`))
+
+  // deleting asks first, so nothing has gone yet
+  expect(mockDispatch).not.toHaveBeenCalled()
+
+  await user.click(screen.getByText('Delete'))
 
   expect(mockDispatch).toHaveBeenCalledWith({ id: 'monday', type: 'delete' })
 })
 
-test('Check set modal vis is done properly', async () => {
+test('Check keeping an idea leaves it alone', async () => {
   const user = userEvent.setup()
-  const mockSetModalVisibility = jest.fn()
+  const mockDispatch = jest.fn()
 
   const ideas = [
     { title: 'sunday', id: 'sunday', text: 'description', updated: true, time: 0 },
   ]
   //
-  render(
-    <Ideas modalVisibility={false} setModalVisibility={mockSetModalVisibility} />,
-    {
-      ideas,
-    }
-  )
+  render(<Ideas />, { ideas, dispatch: mockDispatch })
 
-  await user.click(screen.getByAltText('edit'))
+  await user.click(screen.getByLabelText('delete sunday'))
+  await user.click(screen.getByText('Keep it'))
 
-  expect(mockSetModalVisibility).toHaveBeenCalledWith(true)
+  expect(mockDispatch).not.toHaveBeenCalled()
+  expect(screen.getByText('sunday')).toBeInTheDocument()
+})
+
+test('Check editing an idea happens in place and dispatches the update', async () => {
+  const user = userEvent.setup()
+  const mockDispatch = jest.fn()
+
+  const ideas = [
+    { title: 'sunday', id: 'sunday', text: 'description', updated: true, time: 0 },
+  ]
+  //
+  render(<Ideas />, { ideas, dispatch: mockDispatch })
+
+  await user.click(screen.getByLabelText('edit sunday'))
+
+  const titleField = screen.getByPlaceholderText('Title')
+  await user.clear(titleField)
+  await user.type(titleField, 'monday')
+  await user.click(screen.getByText('Save changes'))
+
+  expect(mockDispatch).toHaveBeenCalledWith({
+    type: 'update',
+    title: 'monday',
+    text: 'description',
+    id: 'sunday',
+  })
 })

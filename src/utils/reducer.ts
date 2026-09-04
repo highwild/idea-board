@@ -11,9 +11,9 @@ export default function reducer(ideas: IdeasType[], action: ActionType) {
 
     //
 
+    // new ideas join at the top, matching the newest-first order the API loads in
     case 'submit':
       return [
-        ...ideas,
         {
           title: action.title,
           text: action.text,
@@ -21,6 +21,7 @@ export default function reducer(ideas: IdeasType[], action: ActionType) {
           time: action.time ?? Date.now(),
           updated: false,
         },
+        ...ideas,
       ]
 
     //

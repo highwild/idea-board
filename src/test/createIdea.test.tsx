@@ -20,13 +20,13 @@ describe('Create Idea', () => {
 
     //
 
-    await user.click(screen.getByText('Capture and save your ideas'))
+    await user.click(screen.getByText('Write an idea'))
     await user.type(screen.getByPlaceholderText('Title'), title)
     await user.type(
       screen.getByPlaceholderText('Enter the description of your idea'),
       decription
     )
-    await user.click(screen.getByText('Save Idea'))
+    await user.click(screen.getByText('Save idea'))
 
     //
 

@@ -27,7 +27,6 @@ type StatusType = 'loading' | 'ready' | 'error'
 
 function App() {
   const [ideas, dispatch] = useReducer(reducer, initialIdeas)
-  const [modalVisibility, setModalVisibility] = useState(false)
   const [status, setStatus] = useState<StatusType>('loading')
   const [saveError, setSaveError] = useState<string>(null)
 
@@ -108,21 +107,28 @@ function App() {
 
   return (
     <IdeasContext.Provider value={globalState}>
-      <div className='create-idea-wrapper'>
+      <main className='board'>
+        <header className='board-head'>
+          <h1>IdeaBoard</h1>
+          <p className='board-blurb'>Everything you have written down.</p>
+        </header>
+
         <CreateIdea />
 
         {status === 'loading' && (
-          <p className='board-status' role='status'>
-            Loading ideas...
-          </p>
+          <div className='skeletons' role='status' aria-label='Loading ideas'>
+            <div className='skeleton' />
+            <div className='skeleton' />
+            <div className='skeleton' />
+          </div>
         )}
 
         {status === 'error' && (
-          <div className='board-status board-status--error' role='alert'>
+          <div className='notice notice--error' role='alert'>
             <span>Could not reach the idea board.</span>
             <button
               type='button'
-              className='retry-btn'
+              className='btn btn-ghost'
               onClick={() => {
                 setStatus('loading')
                 refresh()
@@ -133,16 +139,13 @@ function App() {
         )}
 
         {saveError && status !== 'error' && (
-          <p className='board-status board-status--error' role='alert'>
+          <p className='notice notice--error' role='alert'>
             {saveError}
           </p>
         )}
 
-        <Ideas
-          modalVisibility={modalVisibility}
-          setModalVisibility={setModalVisibility}
-        />
-      </div>
+        {status !== 'loading' && <Ideas isReachable={status !== 'error'} />}
+      </main>
     </IdeasContext.Provider>
   )
 }

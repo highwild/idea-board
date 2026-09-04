@@ -1,89 +1,133 @@
-/* eslint-disable react/require-default-props */
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 
 //
 
-import EditIdea from './editIdea'
+import Form from './form'
 import SortIdeas from './sortIdeas'
+import { PencilIcon, TrashIcon } from './icons'
 import { IdeasContext } from '../src/App'
-import { SelectedItemType } from '../src/types'
 
 //
 
-interface IdeasPropsType {
-  modalVisibility: boolean;
-  setModalVisibility?: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Ideas({ modalVisibility, setModalVisibility }: IdeasPropsType) {
+function Ideas({ isReachable = true }: { isReachable?: boolean }) {
   const { ideas, dispatch, getDate } = useContext(IdeasContext)
-  const [selectedItem, setSelectedItem] = useState<SelectedItemType>({
-    title: '',
-    text: '',
-    id: null,
-  })
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [confirmingId, setConfirmingId] = useState<string | null>(null)
+
+  const written = ideas.filter((idea) => idea.title && idea.text)
+
+  // with nothing loaded and no way to load it, saying "0 ideas" would be a claim
+  // we cannot make
+  if (!isReachable && written.length === 0) return null
 
   return (
     <>
-      <EditIdea
-        isEditOpen={modalVisibility}
-        setModalVisibility={setModalVisibility}
-        selectedItem={selectedItem}
-      />
-
-      <div className='container flex center-hr'>
-        <div className='sort-wrapper'>
-          <SortIdeas isVisible={ideas.length > 2} />
-        </div>
+      <div className='board-bar'>
+        <p className='board-count'>
+          {written.length} {written.length === 1 ? 'idea' : 'ideas'}
+        </p>
+        <SortIdeas isVisible={written.length > 2} />
       </div>
-      <div className='container flex center-hr'>
-        <div className='ideasWrapper mt-2'>
-          {ideas.map((idea) => {
+
+      {written.length === 0 ? (
+        <p className='board-empty'>
+          Nothing written down yet. The first idea goes above.
+        </p>
+      ) : (
+        <ul className='entries'>
+          {written.map((idea) => {
             const { title, text, updated, id, time } = idea
-            if (!(title && text)) return
+
+            const isEditing = id !== null && editingId === id
+            const isConfirming = id !== null && confirmingId === id
+
+            if (isEditing) {
+              return (
+                <li key={id} className='entry entry--editing'>
+                  <Form
+                    initialTitle={title}
+                    initialText={text}
+                    submitLabel='Save changes'
+                    onCancel={() => setEditingId(null)}
+                    onSubmit={(newTitle, newText) => {
+                      dispatch({
+                        type: 'update',
+                        title: newTitle,
+                        text: newText,
+                        id,
+                      })
+                      setEditingId(null)
+                    }}
+                  />
+                </li>
+              )
+            }
+
             return (
-              <div key={id} className='card flex flex-vertical'>
-                <p data-testid='card-title' className='card-title'>
-                  {title}
-                </p>
-                <p data-testid='card-text' className='card-text'>
+              <li key={id} className='entry'>
+                <div className='entry-head'>
+                  <p data-testid='card-title' className='entry-title'>
+                    {title}
+                  </p>
+
+                  <div className='entry-actions'>
+                    <button
+                      type='button'
+                      className='icon-btn'
+                      aria-label={`edit ${title}`}
+                      onClick={() => {
+                        setConfirmingId(null)
+                        setEditingId(id)
+                      }}>
+                      <PencilIcon />
+                    </button>
+                    <button
+                      type='button'
+                      className='icon-btn icon-btn--danger'
+                      aria-label={`delete ${title}`}
+                      onClick={() => setConfirmingId(id)}>
+                      <TrashIcon />
+                    </button>
+                  </div>
+                </div>
+
+                <p data-testid='card-text' className='entry-text'>
                   {text}
                 </p>
-                <p className='card-time'>
+
+                <p className='entry-time'>
                   {updated
                     ? `Updated on : ${getDate(time)}`
                     : `Created on : ${getDate(time)}`}
                 </p>
-                <div className='action-wrapper flex'>
-                  <div className='buttons'>
-                    <button
-                      onClick={() => {
-                        dispatch({ type: 'delete', id })
-                      }}>
-                      <img
-                        src='/DeleteButton.svg'
-                        alt={`delete ${title}`}
-                        className='icon'
-                      />
-                    </button>
-                    <button
-                      onClick={() => {
-                        setModalVisibility(!modalVisibility)
-                        setSelectedItem({
-                          title,
-                          text,
-                          id,
-                        })
-                      }}>
-                      <img src='/EditButton.svg' alt='edit' className='icon' />
-                    </button>
+
+                {isConfirming && (
+                  <div className='entry-confirm' role='alert'>
+                    <p>Delete this idea?</p>
+                    <div className='entry-confirm-actions'>
+                      <button
+                        type='button'
+                        className='btn btn-ghost'
+                        onClick={() => setConfirmingId(null)}>
+                        Keep it
+                      </button>
+                      <button
+                        type='button'
+                        className='btn btn-danger'
+                        onClick={() => {
+                          setConfirmingId(null)
+                          dispatch({ type: 'delete', id })
+                        }}>
+                        Delete
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </div>
+                )}
+              </li>
             )
           })}
-        </div>
-      </div>
+        </ul>
+      )}
     </>
   )
 }
