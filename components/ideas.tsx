@@ -7,7 +7,7 @@ import Notes from './notes'
 import StatusControl from './statusControl'
 import { PencilIcon, TrashIcon } from './icons'
 import { IdeasContext } from '../src/App'
-import { StatusType } from '../src/types'
+import { STATUSES, STATUS_LABELS, StatusType } from '../src/types'
 
 //
 
@@ -15,6 +15,7 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
   const { ideas, dispatch, getDate } = useContext(IdeasContext)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
+  const [filter, setFilter] = useState<StatusType | 'all'>('all')
 
   // the one authored moment on this surface: an idea arriving on the board.
   // everything already there stays still.
@@ -22,6 +23,15 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
   const seenIds = useRef<string[] | null>(null)
 
   const written = ideas.filter((idea) => idea.title)
+  const shown =
+    filter === 'all'
+      ? written
+      : written.filter((idea) => (idea.status ?? 'todo') === filter)
+
+  const countFor = (value: StatusType | 'all') =>
+    value === 'all'
+      ? written.length
+      : written.filter((idea) => (idea.status ?? 'todo') === value).length
 
   useEffect(() => {
     const ids = written.map((idea) => idea.id)
@@ -46,9 +56,34 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
     )
   }
 
+  const filterBar = (
+    <div className='filters segmented' role='group' aria-label='Show ideas by status'>
+      {(['all', ...STATUSES] as (StatusType | 'all')[]).map((value) => (
+        <button
+          key={value}
+          type='button'
+          className={`segmented-option segmented-option--${value}`}
+          aria-pressed={filter === value}
+          onClick={() => setFilter(value)}>
+          {value === 'all' ? 'All' : STATUS_LABELS[value]}
+          <span className='filter-count'>{countFor(value)}</span>
+        </button>
+      ))}
+    </div>
+  )
+
   return (
-    <ul className='entries'>
-      {written.map((idea) => {
+    <>
+      {filterBar}
+
+      {shown.length === 0 && (
+        <p className='board-empty board-empty--filtered'>
+          Nothing is {filter === 'all' ? 'here' : STATUS_LABELS[filter as StatusType].toLowerCase()} right now.
+        </p>
+      )}
+
+      <ul className='entries'>
+      {shown.map((idea) => {
         const { title, text, updated, id, time } = idea
         const status: StatusType = idea.status ?? 'todo'
         const notes = idea.notes ?? ''
@@ -165,7 +200,8 @@ function Ideas({ isReachable = true }: { isReachable?: boolean }) {
           </li>
         )
       })}
-    </ul>
+      </ul>
+    </>
   )
 }
 

@@ -147,6 +147,9 @@ components:
   segmented-option-selected:
     backgroundColor: "{colors.surface-hover}"
     textColor: "{colors.text}"
+  segmented-option-planned-selected:
+    backgroundColor: "{colors.planned-field}"
+    textColor: "{colors.planned-ink}"
   segmented-option-todo-selected:
     backgroundColor: "{colors.todo-field}"
     textColor: "{colors.todo-ink}"
@@ -255,6 +258,7 @@ Every pair clears 7:1 against its own field.
 
 | State | Field | Ink |
 | --- | --- | --- |
+| Planned | `#241b3a` | `#b39aff` |
 | To do | `#16233a` | `#8ab4ff` |
 | In progress | `#2e2113` | `#f0b45e` |
 | Done | `#16281c` | `#79cf95` |
@@ -406,7 +410,7 @@ One three-segment grammar serves every mutually exclusive choice on the board: a
 hairline-bordered container with 2px inner padding, segments at 4px radius in quiet ink on
 transparent, the chosen one marked with `aria-pressed` and given the slate wash and full ink.
 
-Two instances exist. **Sort** (Added / Newest / A-Z) sits in the header and renders only when
+Three instances exist. **Sort** (Added / Newest / A-Z) sits in the header and renders only when
 the board holds more than two ideas. It uses the neutral selection: the slate wash and full
 ink. **Status** (To do / In progress / Done) sits on every entry's meta line, always visible,
 because changing it is the most frequent act on the board. Its selected segment carries a
@@ -414,9 +418,15 @@ dimmed field of its own state colour instead of the slate wash — blue, amber, 
 ink drawn from the same hue. A finished entry's title and body also drop to
 `{colors.text-2}` so completed work stops competing with what is still open.
 
-**The Status Field Rule:** the three status colours are the only hues on the board besides the
-accent and the earned red. They appear on the selected status segment and nowhere else — never
-as a dot, a bar, a border, or a background on the entry itself.
+**Filter** sits directly above the list, spanning the measure, carrying All plus the four
+statuses with a small tabular count on each. It is where filtering applies, so it lives there
+rather than in the header, and it wraps to a second line rather than scrolling on narrow
+screens. Filtering to an empty status says so in a sentence instead of showing an empty rule.
+
+**The Status Field Rule:** the four status colours are the only hues on the board besides the
+accent and the earned red. They appear on the selected status segment and on the matching
+selected filter, and nowhere else — never as a dot, a bar, a border, or a background on the
+entry itself.
 
 **The One Segmented Rule:** a new three-way choice reuses this control rather than inventing a
 menu, a select, or a set of pills.

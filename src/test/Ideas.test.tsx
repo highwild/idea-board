@@ -1,4 +1,5 @@
 import userEvent from '@testing-library/user-event'
+import { within } from '@testing-library/react'
 import { render, screen } from './test-utils'
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect'
@@ -124,7 +125,9 @@ test('Check changing status patches only the status', async () => {
 
   render(<Ideas />, { ideas, dispatch: mockDispatch })
 
-  await user.click(screen.getByText('In progress'))
+  // the filter bar carries the same words, so reach into this idea's own control
+  const control = screen.getByLabelText('status of sunday')
+  await user.click(within(control).getByText('In progress'))
 
   expect(mockDispatch).toHaveBeenCalledWith({
     type: 'patch',
@@ -193,4 +196,40 @@ test('Check links in notes are rendered as links', async () => {
   const link = screen.getByRole('link', { name: 'https://imgur.com/a/abc123' })
   expect(link).toHaveAttribute('href', 'https://imgur.com/a/abc123')
   expect(link).toHaveAttribute('rel', 'noreferrer noopener')
+})
+
+test('Check the filter narrows the board to one status', async () => {
+  const user = userEvent.setup()
+
+  const ideas = [
+    { title: 'shoot this week', id: 'a', text: 'ready', updated: false, time: 0, status: 'todo' as const, notes: '' },
+    { title: 'waiting on the new route', id: 'b', text: 'blocked', updated: false, time: 0, status: 'planned' as const, notes: '' },
+  ]
+
+  render(<Ideas />, { ideas })
+
+  expect(screen.getByText('shoot this week')).toBeInTheDocument()
+  expect(screen.getByText('waiting on the new route')).toBeInTheDocument()
+
+  const filters = screen.getByLabelText('Show ideas by status')
+  await user.click(within(filters).getByText('Planned'))
+
+  expect(screen.queryByText('shoot this week')).not.toBeInTheDocument()
+  expect(screen.getByText('waiting on the new route')).toBeInTheDocument()
+})
+
+test('Check a filter with nothing in it says so instead of looking broken', async () => {
+  const user = userEvent.setup()
+
+  const ideas = [
+    { title: 'shoot this week', id: 'a', text: 'ready', updated: false, time: 0, status: 'todo' as const, notes: '' },
+  ]
+
+  render(<Ideas />, { ideas })
+
+  const filters = screen.getByLabelText('Show ideas by status')
+  await user.click(within(filters).getByText('Done'))
+
+  expect(screen.getByText('Nothing is done right now.')).toBeInTheDocument()
+  expect(screen.queryByText('shoot this week')).not.toBeInTheDocument()
 })

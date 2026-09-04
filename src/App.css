@@ -32,6 +32,8 @@
   --danger-ink: #2a1416;
 
   /* status carries its own dimmed field, one per state */
+  --planned-field: #241b3a;
+  --planned-ink: #b39aff;
   --todo-field: #16233a;
   --todo-ink: #8ab4ff;
   --doing-field: #2e2113;
@@ -333,6 +335,11 @@ h1 {
   color: var(--text);
 }
 
+.segmented-option--planned[aria-pressed='true'] {
+  background-color: var(--planned-field);
+  color: var(--planned-ink);
+}
+
 .segmented-option--todo[aria-pressed='true'] {
   background-color: var(--todo-field);
   color: var(--todo-ink);
@@ -348,12 +355,37 @@ h1 {
   color: var(--done-ink);
 }
 
+/* ---------- filters ---------- */
+
+.filters {
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.filters .segmented-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+}
+
+.filter-count {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.6875rem;
+  color: var(--text-3);
+}
+
+.segmented-option[aria-pressed='true'] .filter-count {
+  color: inherit;
+  opacity: 0.7;
+}
+
 /* ---------- entries ---------- */
 
 .entries {
   list-style: none;
   padding: 0;
-  margin: 2rem 0 0;
+  margin: 1.25rem 0 0;
   border-top: 1px solid var(--line);
 }
 
@@ -595,6 +627,11 @@ h1 {
   border-top: 1px solid var(--line);
   color: var(--text-3);
   font-size: 0.9375rem;
+}
+
+.board-empty--filtered {
+  margin-top: 1.25rem;
+  padding-top: 1.5rem;
 }
 
 .skeletons {

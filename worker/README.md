@@ -45,7 +45,7 @@ npm run cf:deploy
 | DELETE | `/api/ideas/:id` | -                           | `204`, `404` if missing         |
 
 Each idea is `{ id, title, text, updated, time, status, notes }`, where `updated` is a
-boolean, `status` is one of `todo`, `in-progress` or `done`, and `notes` is free text
+boolean, `status` is one of `planned`, `todo`, `in-progress` or `done`, and `notes` is free text
 (20000 characters max, may be empty).
 
 `PUT` is a full edit: it rewrites the title, text and date, and sets `updated`. `PATCH`

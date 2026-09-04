@@ -1,9 +1,10 @@
 /* eslint-disable prettier/prettier */
-export const STATUSES = ['todo', 'in-progress', 'done'] as const
+export const STATUSES = ['planned', 'todo', 'in-progress', 'done'] as const
 
 export type StatusType = (typeof STATUSES)[number]
 
 export const STATUS_LABELS: Record<StatusType, string> = {
+  planned: 'Planned',
   todo: 'To do',
   'in-progress': 'In progress',
   done: 'Done',
